@@ -7,14 +7,26 @@ namespace Facer.Data
 {
     public class Student
     {
-        //If the static datastorage object is not null, it will be notified each time a field is updated
-        public static DataStorage DataStorage { get; set; }
-
+        private DataStorage DataStorage;
         private string _firstname;
         private string _lastname;
+        private int _id;
+        private bool valid;
 
         [PrimaryKey]
-        public int ID { get; }
+        public int ID {
+            get {
+                return _id;
+            }
+            set {
+                if (valid)
+                {
+                    throw new MemberAccessException("Cannot change id after setting it");
+                }
+                valid = true;
+                _id = value;
+            }
+        }
 
         public string FirstName { get { return _firstname; } set { _firstname = value; UpdateStorage(); } }
         public string LastName { get { return _lastname; } set { _lastname = value; UpdateStorage(); } }
@@ -25,6 +37,11 @@ namespace Facer.Data
             {
                 DataStorage.UpdateStudent(this);
             }
+        }
+
+        public void BindToStorage(DataStorage ds)
+        {
+            DataStorage = ds;
         }
     }
 }

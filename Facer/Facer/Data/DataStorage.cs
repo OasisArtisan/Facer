@@ -12,6 +12,7 @@ namespace Facer.Data
         // Mutator Methods
         public abstract void EnrollStudent(Student st);
         public abstract void RemoveStudent(Student st);
+        public abstract void RemoveStudent(int id);
         public abstract void UpdateStudent(Student st);
         public abstract void ClearStudents();
 
@@ -31,6 +32,7 @@ namespace Facer.Data
         // Mutator Methods
         public abstract void CreateAttendanceRecord(AttendanceRecord ar);
         public abstract void RemoveAttendanceRecord(AttendanceRecord ar);
+        public abstract void RemoveAttendanceRecord(DateTime dt);
         public abstract void UpdateAttendanceRecord(AttendanceRecord ar);
         public abstract void ClearAttendanceRecords();
 

@@ -7,16 +7,29 @@ namespace Facer.Data
 {
     public class AttendanceRecord
     {
-        public static DataStorage DataStorage { get; set; }
+        private DataStorage DataStorage;
+        private bool valid;
+        private DateTime _date;
 
         [PrimaryKey]
-        public DateTime Date { get; }
-
-        private Dictionary<int, Student> _attendedStudents;
-        private string _attendedStudentsSerialized;
-
-        public string AttendedStudentsSerialized {
+        public DateTime Date {
             get {
+                return _date;
+            }
+            set {
+                if (valid)
+                {
+                    throw new MemberAccessException("Cannot change date after setting it");
+                }
+                valid = true;
+                _date = value;
+            }
+        }
+
+        public string AttendedStudentsSerialized
+        {
+            get
+            {
                 if (_attendedStudentsSerialized == null)
                 {
                     StringBuilder sb = new StringBuilder();
@@ -26,12 +39,24 @@ namespace Facer.Data
                         sb.Append(",");
                     }
                     //Remove trailing comma
-                    sb.Remove(0, sb.Length - 1);
+                    if(sb.Length > 0)
+                    {
+                        sb.Remove(sb.Length - 1, 1);
+                    }
                     _attendedStudentsSerialized = sb.ToString();
                 }
                 return _attendedStudentsSerialized;
             }
+            set
+            {
+                _attendedStudentsSerialized = value;
+            }
         }
+
+        private Dictionary<int, Student> _attendedStudents;
+        private string _attendedStudentsSerialized;
+
+
 
         public AttendanceRecord()
         {
@@ -98,6 +123,11 @@ namespace Facer.Data
             {
                 DataStorage.UpdateAttendanceRecord(this);
             }
+        }
+
+        public void BindToStorage(DataStorage ds)
+        {
+            DataStorage = ds;
         }
     }
 }
