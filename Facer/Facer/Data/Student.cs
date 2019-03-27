@@ -11,7 +11,9 @@ namespace Facer.Data
         private string _firstname;
         private string _lastname;
         private int _id;
-        private bool valid;
+        private bool _valid;
+
+        public bool Valid { get; }
 
         [PrimaryKey]
         public int ID {
@@ -19,11 +21,11 @@ namespace Facer.Data
                 return _id;
             }
             set {
-                if (valid)
+                if (_valid)
                 {
                     throw new MemberAccessException("Cannot change id after setting it");
                 }
-                valid = true;
+                _valid = true;
                 _id = value;
             }
         }
@@ -42,6 +44,37 @@ namespace Facer.Data
         public void BindToStorage(DataStorage ds)
         {
             DataStorage = ds;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(ID);
+            sb.Append(" ");
+            sb.Append(FirstName);
+            sb.Append(" ");
+            sb.Append(LastName);
+            return sb.ToString();
+        }
+
+        public static string IsValidID(string id)
+        {
+            int idi = 0;
+            if (int.TryParse(id, out idi))
+            {
+                if (!App.Reference.Data.IDExists(idi))
+                {
+                    return null;
+                }
+                else
+                {
+                    return "ID already exists!";
+                }
+            }
+            else
+            {
+                return "ID Must be a valid integer!";
+            }
         }
     }
 }

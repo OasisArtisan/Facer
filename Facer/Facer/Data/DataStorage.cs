@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace Facer.Data
@@ -9,6 +10,12 @@ namespace Facer.Data
         protected Dictionary<int, Student> _enrolledStudents;
         protected SortedList<DateTime, AttendanceRecord> _attendanceRecords;
 
+        public DataStorage()
+        {
+            _enrolledStudents = new Dictionary<int, Student>();
+            _attendanceRecords = new SortedList<DateTime, AttendanceRecord>();
+        }
+
         // Mutator Methods
         public abstract void EnrollStudent(Student st);
         public abstract void RemoveStudent(Student st);
@@ -17,10 +24,16 @@ namespace Facer.Data
         public abstract void ClearStudents();
 
         // Observer Methods
-        public Dictionary<int, Student>.Enumerator EnumerateEnrolledStudents()
+        public bool IDExists(int id)
         {
-            return _enrolledStudents.GetEnumerator();
+            return _enrolledStudents.ContainsKey(id);
         }
+
+        public Dictionary<int, Student>.ValueCollection EnrolledStudents()
+        {
+            return _enrolledStudents.Values;
+        }
+
         public Student GetEnrolledStudent(int id)
         {
             Student st = null;
@@ -39,8 +52,10 @@ namespace Facer.Data
         // Observer Methods
         public IEnumerator<KeyValuePair<DateTime, AttendanceRecord>> EnumerateAttendanceRecords()
         {
+            _attendanceRecords.
             return _attendanceRecords.GetEnumerator();
         }
+
         public AttendanceRecord GetAttendanceRecord(DateTime dt)
         {
             AttendanceRecord ar = null;

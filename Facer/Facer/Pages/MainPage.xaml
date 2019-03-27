@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            x:Class="Facer.Pages.MainPage"
+            xmlns:local="clr-namespace:Facer.Pages">
+    <local:AttendanceRecordsPage x:Name="AttendanceRecordsPage" Title="Attendance"/>
+    <local:StudentsPage x:Name="StudentsPage" Title="Students"/>
+</TabbedPage>
+    
