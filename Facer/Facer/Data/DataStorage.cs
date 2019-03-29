@@ -29,7 +29,7 @@ namespace Facer.Data
             return _enrolledStudents.ContainsKey(id);
         }
 
-        public Dictionary<int, Student>.ValueCollection EnrolledStudents()
+        public IEnumerable<Student> EnrolledStudentsEnumerable()
         {
             return _enrolledStudents.Values;
         }
@@ -50,10 +50,9 @@ namespace Facer.Data
         public abstract void ClearAttendanceRecords();
 
         // Observer Methods
-        public IEnumerator<KeyValuePair<DateTime, AttendanceRecord>> EnumerateAttendanceRecords()
+        public IEnumerable<AttendanceRecord> AttendanceRecordsEnumerable()
         {
-            _attendanceRecords.
-            return _attendanceRecords.GetEnumerator();
+            return _attendanceRecords.Values;
         }
 
         public AttendanceRecord GetAttendanceRecord(DateTime dt)

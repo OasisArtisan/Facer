@@ -11,7 +11,10 @@ namespace Facer.Data
         private string _firstname;
         private string _lastname;
         private int _id;
+        private int _serverID;
         private bool _valid;
+
+        public string Formatted { get { return ToString(); } }
 
         public bool Valid { get; }
 
@@ -32,6 +35,7 @@ namespace Facer.Data
 
         public string FirstName { get { return _firstname; } set { _firstname = value; UpdateStorage(); } }
         public string LastName { get { return _lastname; } set { _lastname = value; UpdateStorage(); } }
+        public int ServerID { get { return _serverID; } set { _serverID = value; UpdateStorage(); } }
 
         private void UpdateStorage()
         {

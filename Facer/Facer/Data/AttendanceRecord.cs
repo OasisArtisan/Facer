@@ -13,6 +13,12 @@ namespace Facer.Data
         private Dictionary<int, Student> _attendedStudents;
         private string _attendedStudentsSerialized;
 
+        public string Formatted { get
+            {
+                return _date.ToString();
+            }
+        }
+
         public bool Valid { get; }
 
         [PrimaryKey]
@@ -67,6 +73,10 @@ namespace Facer.Data
         // the keys stored in the _attendedStudentsSerialized field
         public void Deserialize(Dictionary<int, Student> EnrolledStudents)
         {
+            if(_attendedStudentsSerialized.Length == 0)
+            {
+                return;
+            }
             string[] ids = _attendedStudentsSerialized.Split(',');
             foreach (string id in ids)
             {

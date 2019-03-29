@@ -10,9 +10,27 @@
         <Entry x:Name="FirstNameEntry"/>
         <Label Text="Last Name:"/>
         <Entry x:Name="LastNameEntry"/>
-        <Button x:Name="TakePictureButton" Text="Take Picture"/>
-        <StackLayout x:Name="ImageArea" Orientation="Horizontal" VerticalOptions="FillAndExpand"></StackLayout>
-        <Button x:Name="SaveButton" Text="Save"/>
+
+
+        <Grid x:Name="ImageArea">
+            <Image Source="Portrait_Placeholder.png" Aspect="Fill" Grid.Column="0" Grid.Row="0">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer/>
+                </Image.GestureRecognizers>
+            </Image>
+            <Image Source="Portrait_Placeholder.png" Aspect="Fill" Grid.Column="1" Grid.Row="0">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer/>
+                </Image.GestureRecognizers>
+            </Image>
+            <Image Source="Portrait_Placeholder.png" Aspect="Fill" Grid.Column="2" Grid.Row="0">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer/>
+                </Image.GestureRecognizers>
+            </Image>
+        </Grid>
+
+        <Button x:Name="SaveButton" Text="Save" IsEnabled="False"/>
         <Button x:Name="CancelButton" Text="Cancel"/>
     </StackLayout>
 </ContentPage>
