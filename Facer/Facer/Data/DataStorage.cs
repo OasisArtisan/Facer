@@ -52,5 +52,10 @@ namespace Facer.Data
         public abstract void ClearData();
         public abstract void LoadData();
         public abstract void Close();
+
+        public static void mm()
+        {
+            var data = new SQLiteDataStorage("","");
+        }
     }
 }

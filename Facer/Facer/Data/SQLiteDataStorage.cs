@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using SQLite;
+using System.Web;
+using System.Net.Http;
 
 namespace Facer.Data
 {
@@ -31,6 +33,7 @@ namespace Facer.Data
         {
             RemoveStudent(st.ID);
         }
+
         public override void RemoveStudent(int id)
         {
             // Caution: This method does not remove the student from attendance records

@@ -7,7 +7,7 @@ namespace Facer.Data
 {
     public class Student
     {
-        private DataStorage DataStorage;
+        private static DataStorage DataStorage;
         private string _firstname;
         private string _lastname;
         private int _id;
@@ -27,7 +27,7 @@ namespace Facer.Data
                 _id = value;
             }
         }
-
+        
         public string FirstName { get { return _firstname; } set { _firstname = value; UpdateStorage(); } }
         public string LastName { get { return _lastname; } set { _lastname = value; UpdateStorage(); } }
 
@@ -39,7 +39,7 @@ namespace Facer.Data
             }
         }
 
-        public void BindToStorage(DataStorage ds)
+        public static void BindToStorage(DataStorage ds)
         {
             DataStorage = ds;
         }

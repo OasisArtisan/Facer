@@ -7,9 +7,12 @@ namespace Facer.Data
 {
     public class AttendanceRecord
     {
-        private DataStorage DataStorage;
+        private static DataStorage DataStorage;
         private bool valid;
         private DateTime _date;
+        private Dictionary<int, Student> _attendedStudents;
+        private string _attendedStudentsSerialized;
+
 
         [PrimaryKey]
         public DateTime Date {
@@ -52,11 +55,6 @@ namespace Facer.Data
                 _attendedStudentsSerialized = value;
             }
         }
-
-        private Dictionary<int, Student> _attendedStudents;
-        private string _attendedStudentsSerialized;
-
-
 
         public AttendanceRecord()
         {
@@ -125,7 +123,7 @@ namespace Facer.Data
             }
         }
 
-        public void BindToStorage(DataStorage ds)
+        public static void BindToStorage(DataStorage ds)
         {
             DataStorage = ds;
         }

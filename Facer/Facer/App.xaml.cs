@@ -18,8 +18,8 @@ namespace Facer
         {
             InitializeComponent();
             AppDataStorage = new SQLiteDataStorage(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), DataStorageFileName);
-            Student.DataStorage = AppDataStorage;
-            AttendanceRecord.DataStorage = AppDataStorage;
+            Student.BindToStorage(AppDataStorage);
+            AttendanceRecord.BindToStorage(AppDataStorage);
             MainPage = new MainPage();
         }
 
