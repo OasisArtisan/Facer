@@ -26,10 +26,10 @@ namespace ImageTesting
         {
             //FaceClient.Shared.Endpoint = Endpoints.WestUS;
             //FaceClient.Shared.SubscriptionKey = "3a0ddda1ac4a4990a8061356b38c4e75";
-            //ImageReady im = new ImageReady("C:/Users/HP/Pictures/Facer/brothers.jpeg");
-            //FaceDetectionRequest faceRequest = new FaceDetectionRequest(im);
+            ImageReady im = new ImageReady("C:/Users/HP/Pictures/Facer/brothers.jpeg");
+            FaceDetectionRequest faceRequest = new FaceDetectionRequest(im);
 
-            //Task<string> Result = faceRequest.MakeAnalysisRequest();
+            Task<string> Result = faceRequest.MakeAnalysisRequest();
 
             //ImageModify.AddImage(im);
             //ImageModify.FaceRectngle(Result.Result);

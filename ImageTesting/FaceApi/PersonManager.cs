@@ -27,7 +27,7 @@ namespace ImageTesting
 
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", key);
 
-            var uri = $"{SharedData.ServerLocation}{groupID}/persons";
+            var uri = $"{SharedData.ServerLocation}/{groupID}/persons";
 
             HttpResponseMessage response;
             var requestBody = "{\"name\": \"" + name + "\"}";
@@ -55,7 +55,7 @@ namespace ImageTesting
             if(targetFace != null)
                 queryString["targetFace"] = targetFace;
 
-            var uri = $"{SharedData.ServerLocation}{groupID}/persons/{personID}/persistedFaces/" + queryString;
+            var uri = $"{SharedData.ServerLocation}/{groupID}/persons/{personID}/persistedFaces/" + queryString;
 
             HttpResponseMessage response;
 
@@ -71,9 +71,17 @@ namespace ImageTesting
             return response.IsSuccessStatusCode;
         }
 
-        public async static Task<List<Person>> GetAllPersons()
+        public async static Task<List<Person>> GetAllPersons(string key, string groupID)
         {
-            s
+            var client = new HttpClient();
+
+            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", key);
+
+            var uri = $"{SharedData.ServerLocation}/{groupID}/persons";
+
+            var response = client.GetAsync(uri);
+
+            return JsonConvert.DeserializeObject<List<Person>>(response.Result.Content.ReadAsStringAsync().Result);
         }
 
         

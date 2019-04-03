@@ -19,7 +19,7 @@ namespace ImageTesting
             var queryString = HttpUtility.ParseQueryString(string.Empty);
 
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", key);
-            var uri = SharedData.ServerLocation + groupID + "?" + queryString;
+            var uri = SharedData.ServerLocation + "/"+ groupID + "?" + queryString;
 
             HttpResponseMessage response;
             byte[] bytedata = Encoding.UTF8.GetBytes("{\"name\" : \"" + name + "\"}");
@@ -40,7 +40,7 @@ namespace ImageTesting
             // Request headers
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", key);
 
-            var uri = SharedData.ServerLocation + groupID + "?" + queryString;
+            var uri = SharedData.ServerLocation + "/" + groupID + "?" + queryString;
 
             var response = await client.DeleteAsync(uri);
 
@@ -61,7 +61,7 @@ namespace ImageTesting
             // Request headers
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", key);
 
-            var uri = SharedData.ServerLocation + groupID + "/train?" + queryString;
+            var uri = SharedData.ServerLocation + "/" + groupID + "/train?" + queryString;
 
             HttpResponseMessage response;
 
@@ -111,7 +111,7 @@ namespace ImageTesting
             // Request headers
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", key);
 
-            var uri = SharedData.ServerLocation + groupID + "/training" + queryString;
+            var uri = SharedData.ServerLocation + "/" + groupID + "/training" + queryString;
 
             var response = await client.GetAsync(uri);
 

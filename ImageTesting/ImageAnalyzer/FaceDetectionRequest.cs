@@ -11,7 +11,6 @@ namespace ImageTesting
     public class FaceDetectionRequest
     {
         private const string uriBase = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect";
-
         private ImageReady image { get; set; }
         private byte[] imageByteArray;
         HttpClient client;
@@ -20,8 +19,7 @@ namespace ImageTesting
         public FaceDetectionRequest(ImageReady image)
         {
             this.image = image;
-            imageByteArray = image.GetImageAsByteArray();
-
+            
             client = new HttpClient();
             // Request headers.
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", SharedData.SubscriptionKey);
@@ -30,9 +28,12 @@ namespace ImageTesting
             string requestParameters = "returnFaceId=true";
 
             // Assemble the URI for the REST API Call.
-            uri = uriBase + "?" + requestParameters;
+            uri = uriBase + "?" + requestParameters;= image.GetImageAsByteArray();
+
+           
         }
 
+        // This method return JSON contain all faces inforamtion, which can be found using JSONConvert.Deserialize<List<Face>>()
         public async Task<string> MakeAnalysisRequest()
         {
             HttpResponseMessage response;
