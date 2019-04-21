@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Facer.Pages.EditStudentPage">
+    <StackLayout>
+        <Label Text="ID (Must be unique):"/>
+        <Entry x:Name="IDEntry" Keyboard="Numeric"/>
+        <Label x:Name="IDEntryFeedback" Text="ID Is not unique !" IsVisible="False"/>
+        <Label Text="First Name:"/>
+        <Entry x:Name="FirstNameEntry"/>
+        <Label Text="Last Name:"/>
+        <Entry x:Name="LastNameEntry"/>
+
+
+        <Grid x:Name="ImageArea">
+            <Image Source="Portrait_Placeholder.png" Aspect="Fill" Grid.Column="0" Grid.Row="0">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer/>
+                </Image.GestureRecognizers>
+            </Image>
+            <Image Source="Portrait_Placeholder.png" Aspect="Fill" Grid.Column="1" Grid.Row="0">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer/>
+                </Image.GestureRecognizers>
+            </Image>
+            <Image Source="Portrait_Placeholder.png" Aspect="Fill" Grid.Column="2" Grid.Row="0">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer/>
+                </Image.GestureRecognizers>
+            </Image>
+        </Grid>
+
+        <Button x:Name="SaveButton" Text="Save" IsEnabled="False"/>
+        <Button x:Name="CancelButton" Text="Cancel"/>
+    </StackLayout>
+</ContentPage>

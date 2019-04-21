@@ -3,6 +3,7 @@ using System.IO;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Facer.Data;
+using Facer.Pages;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Facer
@@ -11,15 +12,17 @@ namespace Facer
     {
         public static readonly string ApplicationName = "Facer";
         public static readonly string DataStorageFileName = ApplicationName + "_local_storage";
+        private static App _reference;
+        public static App Reference { get { return _reference; } }
 
-        public DataStorage AppDataStorage { get; }
-
+        public DataStorage Data { get; }
         public App()
         {
+            _reference = this;
             InitializeComponent();
-            AppDataStorage = new SQLiteDataStorage(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), DataStorageFileName);
-            Student.BindToStorage(AppDataStorage);
-            AttendanceRecord.BindToStorage(AppDataStorage);
+            Data = new SQLiteDataStorage(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), DataStorageFileName);
+            Data.LoadData();
+            
             MainPage = new MainPage();
         }
 

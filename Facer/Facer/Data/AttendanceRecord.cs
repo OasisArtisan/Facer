@@ -7,12 +7,19 @@ namespace Facer.Data
 {
     public class AttendanceRecord
     {
-        private static DataStorage DataStorage;
-        private bool valid;
+        private DataStorage DataStorage;
+        private bool _valid;
         private DateTime _date;
         private Dictionary<int, Student> _attendedStudents;
         private string _attendedStudentsSerialized;
 
+        public string Formatted { get
+            {
+                return _date.ToString();
+            }
+        }
+
+        public bool Valid { get; }
 
         [PrimaryKey]
         public DateTime Date {
@@ -20,11 +27,11 @@ namespace Facer.Data
                 return _date;
             }
             set {
-                if (valid)
+                if (_valid)
                 {
                     throw new MemberAccessException("Cannot change date after setting it");
                 }
-                valid = true;
+                _valid = true;
                 _date = value;
             }
         }
@@ -66,10 +73,14 @@ namespace Facer.Data
         // the keys stored in the _attendedStudentsSerialized field
         public void Deserialize(Dictionary<int, Student> EnrolledStudents)
         {
+            if(_attendedStudentsSerialized.Length == 0)
+            {
+                return;
+            }
             string[] ids = _attendedStudentsSerialized.Split(',');
             foreach (string id in ids)
             {
-                int i = Int32.Parse(id);
+                int i = int.Parse(id);
                 Student st = null;
                 // Ignore ids that are not included anymore in the enrolled students list
                 if (EnrolledStudents.TryGetValue(i, out st))
@@ -80,7 +91,7 @@ namespace Facer.Data
         }
 
         // Mutator Methods
-
+        // To preserve the integrity of the general data structure, the student object passed must be enrolled.
         public void AddStudent(Student st)
         {
             _attendedStudents.Add(st.ID, st);
@@ -123,7 +134,7 @@ namespace Facer.Data
             }
         }
 
-        public static void BindToStorage(DataStorage ds)
+        public void BindToStorage(DataStorage ds)
         {
             DataStorage = ds;
         }

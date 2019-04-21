@@ -14,7 +14,9 @@ namespace Facer.Data
 
         public SQLiteDataStorage(string dbPath, string dbName)
         {
-            Database = new SQLiteConnection(Path.Combine(dbPath,dbName + ".db3"));
+            string combinedPath = Path.Combine(dbPath, dbName + ".db3");
+            Console.WriteLine("Coco}" + combinedPath);
+            Database = new SQLiteConnection(combinedPath);
             // Types that can be converted to columns in a table must have all of their properites primitive
             // Only properties that have a get and set access will be converted to a column
             // Exact list of allowed field types https://github.com/praeclarum/sqlite-net/wiki/Features
@@ -26,7 +28,7 @@ namespace Facer.Data
         {
             st.BindToStorage(this);
             _enrolledStudents.Add(st.ID, st);
-            Database.InsertOrReplace(st);
+            Database.Insert(st);
         }
 
         public override void RemoveStudent(Student st)
@@ -43,7 +45,7 @@ namespace Facer.Data
 
         public override void UpdateStudent(Student st)
         {
-            Database.InsertOrReplace(st);
+            Database.Update(st);
         }
 
         public override void ClearStudents()
