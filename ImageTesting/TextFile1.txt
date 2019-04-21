@@ -1,0 +1,16 @@
+﻿Omar Needs:
+
+In Interface:
+
+void CreatStudent(Student s)
+List<Rectangle> Detect(String path)
+List<Student> Identify(String path)   >>> Dictionary<Student,float> float=>confidence    
+
+
+
+
+
+
+
+Key is Assigned Internally
+

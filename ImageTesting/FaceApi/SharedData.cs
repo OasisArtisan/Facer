@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ImageTesting
 {
-    class SharedData
+    static class SharedData
     {
-        public const string SubscriptionKey  = "98766ba89df84f7d93d7bfab99585679";
-        public const string SubscriptionKey2 = "614011a4586649a9aef97f21644edf9d";
+        public const string SubscriptionKey  = "c969d0773c75461ea111220f9cdf11ac";
+        public const string SubscriptionKey2 = "1bdc0b81b6f34b6fa5ed8b04d0665b5e";
         public const string ServerLocation = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/persongroups";
-        public const string ServiceLocationForServices = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0";
+        public const string ServerLocationForServices = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0";
     }
 }

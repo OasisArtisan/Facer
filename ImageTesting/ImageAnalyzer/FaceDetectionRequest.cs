@@ -28,7 +28,7 @@ namespace ImageTesting
             string requestParameters = "returnFaceId=true";
 
             // Assemble the URI for the REST API Call.
-            uri = uriBase + "?" + requestParameters;= image.GetImageAsByteArray();
+            //uri = uriBase + "?" + requestParameters = image.GetImageAsByteArray();
 
            
         }

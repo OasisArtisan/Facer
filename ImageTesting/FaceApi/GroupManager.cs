@@ -28,7 +28,7 @@ namespace ImageTesting
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 response = await client.PutAsync(uri, content);
             }
-
+            
             return response.IsSuccessStatusCode;
         }
 
@@ -61,7 +61,7 @@ namespace ImageTesting
             // Request headers
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", key);
 
-            var uri = SharedData.ServerLocation + "/" + groupID + "/train?" + queryString;
+            var uri = SharedData.ServerLocation + "/" + groupID + "/train" + queryString;
 
             HttpResponseMessage response;
 
@@ -70,7 +70,7 @@ namespace ImageTesting
 
             using (var content = new ByteArrayContent(byteData))
             {
-                content.Headers.ContentType = new MediaTypeHeaderValue("application/json >");
+                //content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 response = await client.PostAsync(uri, content);
             }
 
@@ -113,8 +113,9 @@ namespace ImageTesting
 
             var uri = SharedData.ServerLocation + "/" + groupID + "/training" + queryString;
 
+            Console.WriteLine(uri);
             var response = await client.GetAsync(uri);
-
+            Console.WriteLine(await response.Content.ReadAsStringAsync());
 
             // $$ Example of returned data $$$
 
@@ -126,7 +127,7 @@ namespace ImageTesting
              }*/
 
              // In this function "status" only is returned...
-            return JsonConvert.DeserializeObject<Dictionary<string, string>>(response.Content.ReadAsStringAsync().Result)["status"];
+            return JsonConvert.DeserializeObject<Dictionary<string, string>>(await response.Content.ReadAsStringAsync())["status"];
         }
         #endregion
 
@@ -160,7 +161,7 @@ namespace ImageTesting
             return await GetPersongroups(SubscriptionKey);
         }
 
-        public async Task<string> CreatPearsonGroup(string name, string groupID)
+        public async Task<string> GetTainingStatus(string groupID)
         {
             return await GetTrainingstatus(groupID, SubscriptionKey);
         }

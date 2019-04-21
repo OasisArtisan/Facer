@@ -13,6 +13,10 @@ namespace ImageTesting
 {
     public class PersonManager
     {
+
+
+        #region Static methods
+
         /// <summary>
         /// Create a new person and ad him to a PersonGroup
         /// </summary>
@@ -20,7 +24,7 @@ namespace ImageTesting
         /// <param name="name"></param>
         /// <param name="key">Subscription Key</param>
         /// <returns>return the person ID in string </returns>
-        public async static Task<string> Creatperson(string groupID, string name, string key)
+        public async static Task<string> Createperson(string groupID, string name, string key)
         {
             var client = new HttpClient();
             var queryString = HttpUtility.ParseQueryString(string.Empty);
@@ -39,9 +43,8 @@ namespace ImageTesting
                 response = await client.PostAsync(uri, content);
             }
 
-            return JsonConvert.DeserializeObject<Dictionary<string, string>>(response.Content.ReadAsStringAsync().Result)["personId"];
+            return JsonConvert.DeserializeObject<Dictionary<string, string>>(await response.Content.ReadAsStringAsync())["personId"];
         }
-
 
         public async static Task<bool> AddpersonFace(string groupID, string personID, string imagePath, string subscriptionKey, string targetFace = null)
         {
@@ -71,7 +74,7 @@ namespace ImageTesting
             return response.IsSuccessStatusCode;
         }
 
-        public async static Task<List<Person>> GetAllPersons(string key, string groupID)
+        public async static Task<List<Person>> GetAllpersons(string groupID, string key)
         {
             var client = new HttpClient();
 
@@ -84,6 +87,36 @@ namespace ImageTesting
             return JsonConvert.DeserializeObject<List<Person>>(response.Result.Content.ReadAsStringAsync().Result);
         }
 
-        
+        #endregion
+
+        #region Constructor & Subscription Key
+        public string Key { get; private set; }
+
+        public PersonManager(string key)
+        {
+            Key = key;
+        }
+        #endregion
+
+        #region Instance Method
+
+        public async Task<string> CreatPerson(string groupID, string name)
+        {
+            return await Createperson(groupID, name, Key);
+        }
+
+        public async Task<bool> AddPersonFace(string groupID, string personID, string imagePath, string targetFace = null)
+        {
+            return await AddpersonFace(groupID, personID, imagePath, Key, targetFace);
+        }
+
+        public async Task<List<Person>> GetAllPersons(string groupID)
+        {
+            return await GetAllpersons(groupID, Key);
+        }
+
+        #endregion
+
+
     }
 }
