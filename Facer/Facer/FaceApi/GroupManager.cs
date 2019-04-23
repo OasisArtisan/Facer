@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 using System.Web;
 using System.Net.Http.Headers;
 
-namespace ImageTesting
+namespace Facer.FaceApi
 {
     public class PersonGroupManager
     {

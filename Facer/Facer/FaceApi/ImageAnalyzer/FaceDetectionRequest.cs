@@ -6,7 +6,7 @@ using System.Net.Http.Headers;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Facer
+namespace Facer.FaceApi
 {
     public class FaceDetectionRequest
     {

@@ -8,7 +8,7 @@ using Emgu.CV.Structure;
 using Newtonsoft.Json;
 using System.Drawing;
 
-namespace Facer
+namespace Facer.FaceApi
 {
     public class ImageModify
     {

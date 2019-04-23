@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using SQLite;
 
-namespace Facer.Data
+namespace ImageTesting
 {
     public class Student
     {
-        private static DataStorage DataStorage;
+        //private static DataStorage DataStorage;
         private string _firstname;
         private string _lastname;
         private int _id;
@@ -18,7 +17,7 @@ namespace Facer.Data
 
         public bool Valid { get; }
 
-        [PrimaryKey]
+        //[PrimaryKey]
         public int ID {
             get {
                 return _id;
@@ -33,22 +32,22 @@ namespace Facer.Data
             }
         }
         
-        public string FirstName { get { return _firstname; } set { _firstname = value; UpdateStorage(); } }
-        public string LastName { get { return _lastname; } set { _lastname = value; UpdateStorage(); } }
-        public string ServerID { get { return _serverID; } set { _serverID = value; UpdateStorage(); } }
+        public string FirstName { get { return _firstname; } set { _firstname = value;  } }
+        public string LastName { get { return _lastname; } set { _lastname = value; } }
+        public string ServerID { get { return ""; } set { _serverID = value;  } }
 
-        private void UpdateStorage()
-        {
-            if (DataStorage != null)
-            {
-                DataStorage.UpdateStudent(this);
-            }
-        }
+        //private void UpdateStorage()
+        //{
+        //    if (DataStorage != null)
+        //    {
+        //        DataStorage.UpdateStudent(this);
+        //    }
+        //}
 
-        public static void BindToStorage(DataStorage ds)
-        {
-            DataStorage = ds;
-        }
+        //public static void BindToStorage(DataStorage ds)
+        //{
+        //    DataStorage = ds;
+        //}
 
         public override string ToString()
         {
@@ -63,22 +62,22 @@ namespace Facer.Data
 
         public static string IsValidID(string id)
         {
-            int idi = 0;
-            if (int.TryParse(id, out idi))
-            {
-                if (!App.Reference.Data.IDExists(idi))
-                {
-                    return null;
-                }
-                else
-                {
-                    return "ID already exists!";
-                }
-            }
-            else
-            {
-                return "ID Must be a valid integer!";
-            }
+            //int idi = 0;
+            //if (int.TryParse(id, out idi))
+            //{
+            //    if (!App.Reference.Data.IDExists(idi))
+            //    {
+            //        return null;
+            //    }
+            //    else
+            //    {
+            //        return "ID already exists!";
+            //    }
+            //}
+            //else
+            //{
+            return "ID Must be a valid integer!";
+            //}
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Newtonsoft.Json;
 
-namespace ImageTesting
+namespace Facer.FaceApi
 {
     public class FaceApi
     {

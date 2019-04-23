@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Facer.ImageAnalyzer
+namespace Facer.FaceApi
 {
-    class ImageReady
+    public class ImageReady
     {
         public FileInfo file { get; private set; }
 
@@ -18,7 +18,7 @@ namespace Facer.ImageAnalyzer
                 throw new FileNotFoundException("File doesn't exist, check it again");
             }
 
-            if(file.Name.EndsWith("jpeg") || file.Name.EndsWith("jpg") || file.Name.EndsWith("png"))
+            if(!(file.Name.EndsWith("jpeg") || file.Name.EndsWith("jpg") || file.Name.EndsWith("png")))
             {
                 throw new TypeInitializationException("This is not supported type, image should be either JPEG or PNG", null);
             }

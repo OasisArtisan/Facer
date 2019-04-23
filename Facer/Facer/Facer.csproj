@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -10,6 +10,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ImageAnalyzer\**" />
+    <EmbeddedResource Remove="ImageAnalyzer\**" />
+    <None Remove="ImageAnalyzer\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Config.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Config.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
     <PackageReference Include="Xam.Plugin.Media" Version="4.0.1.5" />
     <PackageReference Include="Xamarin.Forms" Version="3.6.0.264807" />

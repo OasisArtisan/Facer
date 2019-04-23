@@ -10,7 +10,7 @@ using System.Linq;
 // EndPoint = https://westcentralus.api.cognitive.microsoft.com/face/v1.0
 // Group 1: Name: Test1, ID: 111111
 
-namespace ImageTesting
+namespace Facer
 {
     class Program
     {
@@ -45,51 +45,15 @@ namespace ImageTesting
             //    }
             //}
             #endregion
-            
+            Console.WriteLine(Directory.GetCurrentDirectory());
 
             MainAsync();
 
-            Console.WriteLine("Main is done");
+            Console.WriteLine("Successfully done");
             Console.ReadKey();
         }
 
         public async static void MainAsync()
-        {
-            var manager = new PersonGroupManager(SharedData.SubscriptionKey);
-            var list = await manager.GetPersonGroups();
-            foreach(var g in list)
-                Console.WriteLine($"{g.Name} : {g.PersonGroupID}");
-        }
-
-        public async static void __MainAsync()
-        {
-
-            StudentDetector sd = await StudentDetector.CreateStudentDetector();
-            //var paths = Directory.GetFiles(@"D:\ImageDataSet\A");
-            //Console.WriteLine("Images Paths:");
-            //Console.WriteLine(string.Join("\n", paths));
-            //Console.WriteLine("\nStart adding Student");
-            //await sd.AddStudentAsync(new Student { FirstName = "Abdullah", LastName = "Alamoodi" }, paths);
-            //Console.WriteLine("Every body is added");
-            //Console.WriteLine("Training Started...");
-            //await sd.TrainGroup();
-            //Console.WriteLine("Done Training.");
-            var time = DateTime.Now.Second;
-            Console.WriteLine("Start Identification Process...");
-            var dict = await sd.Identify(@"D:\ImageDataSet\id4.jpg");
-            Console.WriteLine("Done Identification...");
-            foreach(var p in dict.Keys)
-            {
-                if(p.Name != null && p.Name.Length > 1)
-                {
-                    Console.WriteLine($"Person:{p.Name}, Confidence: {dict[p].Confidence}");
-                }
-                else
-                    Console.WriteLine("Unknown Person...");
-            }
-            Console.WriteLine($"Needed Time: {(DateTime.Now.Second - time).ToString()}s");
-        }
-        public async static void _MainAsync()
         {
             // Creating instances of our objects
             var GManager = new PersonGroupManager(SharedData.SubscriptionKey);
