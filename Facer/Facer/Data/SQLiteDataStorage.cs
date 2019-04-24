@@ -10,6 +10,7 @@ namespace Facer.Data
 {
     class SQLiteDataStorage : DataStorage
     {
+        // Should use SQLiteAsyncConnection instead
         private SQLiteConnection Database;
 
         public SQLiteDataStorage(string dbPath, string dbName)
@@ -36,7 +37,7 @@ namespace Facer.Data
             RemoveStudent(st.ID);
         }
 
-        public override void RemoveStudent(int id)
+        public override void RemoveStudent(string id)
         {
             // Caution: This method does not remove the student from attendance records
             _enrolledStudents.Remove(id);
@@ -90,7 +91,7 @@ namespace Facer.Data
 
         public override void LoadData()
         {
-            _enrolledStudents = new Dictionary<int, Student>();
+            _enrolledStudents = new Dictionary<string, Student>();
             List<Student> stlist = Database.Query<Student>("SELECT * FROM Student");
             foreach (Student st in stlist)
             {

@@ -1,2 +1,2 @@
-adb pull /data/user/0/com.companyname.Facer/files/.local/share/Facer_local_storage.db3 "D:/Facer/PulledData"
 adb pull "/data/user/0/com.companyname.Facer/files/.local/share/" "D:/Facer/PulledData"
+adb pull "/storage/emulated/0/Android/data/com.companyname.Facer/files/" "D:/Facer/PulledData"

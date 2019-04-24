@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Facer.Pages.EditStudentPage">
+<facer_pages:CustomContentPage
+    xmlns:facer_pages="clr-namespace:Facer.Pages"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Facer.Pages.EditStudentPage">
     <StackLayout>
         <Label Text="ID (Must be unique):"/>
         <Entry x:Name="IDEntry" Keyboard="Numeric"/>
@@ -33,4 +35,4 @@
         <Button x:Name="SaveButton" Text="Save" IsEnabled="False"/>
         <Button x:Name="CancelButton" Text="Cancel"/>
     </StackLayout>
-</ContentPage>
+</facer_pages:CustomContentPage>

@@ -4,6 +4,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Facer.Data;
 using Facer.Pages;
+using Facer.FaceApi;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Facer
@@ -15,20 +16,26 @@ namespace Facer
         private static App _reference;
         public static App Reference { get { return _reference; } }
 
-        public DataStorage Data { get; }
+        private DataStorage _data;
+        private StudentDetector _faceAPI;
+        public DataStorage Data { get { return _data; } }
+        public StudentDetector FaceAPI { get { return _faceAPI; } }
+
         public App()
         {
             _reference = this;
             InitializeComponent();
-            Data = new SQLiteDataStorage(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), DataStorageFileName);
-            Data.LoadData();
-            
+            _data = new SQLiteDataStorage(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), DataStorageFileName);
+            _data.LoadData();
             MainPage = new MainPage();
         }
 
-        protected override void OnStart()
+        protected async override void OnStart()
         {
-            // Handle when your app starts
+            if(_faceAPI == null)
+            {
+                _faceAPI = await StudentDetector.CreateStudentDetector();
+            }
         }
 
         protected override void OnSleep()

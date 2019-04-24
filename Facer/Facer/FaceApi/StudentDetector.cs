@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.IO;
+using Facer.Data;
 
 namespace Facer.FaceApi
 {
-    class StudentDetector 
+    public class StudentDetector 
     {
         #region Private Data
         private string _key = SharedData.SubscriptionKey;
@@ -18,7 +19,7 @@ namespace Facer.FaceApi
         #endregion
 
         #region Public Data
-
+        public bool TrainingUpdated;
         #endregion
 
         #region Constructor
@@ -59,12 +60,12 @@ namespace Facer.FaceApi
 
         public async Task AddStudentAsync(Student s, params string[] images)
         {
-            var studentID = await _pManager.CreatPerson(_groupID, ($"{s.FirstName} {s.LastName}"));
-            s.ServerID = studentID;
+            var studentID = await _pManager.CreatPerson(_groupID, ($"{s.ID}"));
             foreach(var image in images)
             {
                 await _pManager.AddPersonFace(_groupID, studentID, image);
             }
+            TrainingUpdated = false;
         }
 
         public async Task<Dictionary<string, FaceRectangle>> Detect(string imagePath, FaceApi api = null)
@@ -92,6 +93,10 @@ namespace Facer.FaceApi
 
         public async Task<Dictionary<Person, IdentificationInfo>> Identify(string path)
         {
+            if(!TrainingUpdated)
+            {
+                await TrainGroup();
+            }
             var faceTools = new FaceApi(new ImageReady(path));
 
             // Detect Faces
@@ -140,7 +145,7 @@ namespace Facer.FaceApi
         public async Task<bool> TrainGroup()
         {
             var result = await _gManager.TrainPersonGroup(_groupID);
-
+            TrainingUpdated = true;
             return result;
         }
         #endregion
@@ -155,7 +160,7 @@ namespace Facer.FaceApi
 
             var ss = await _pManager.GetAllPersons(_groupID);
 
-            return ss.Find(x => x.PersonID == id);
+            return ss.Find(x => x.ServerID == id);
         }
         #endregion
     }

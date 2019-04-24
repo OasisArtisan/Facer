@@ -10,8 +10,7 @@ namespace Facer.Data
         private static DataStorage DataStorage;
         private string _firstname;
         private string _lastname;
-        private int _id;
-        private string _serverID; // This must be changed into "string"
+        private string _id;
         private bool _valid;
 
         public string Formatted { get { return ToString(); } }
@@ -19,7 +18,7 @@ namespace Facer.Data
         public bool Valid { get; }
 
         [PrimaryKey]
-        public int ID {
+        public string ID {
             get {
                 return _id;
             }
@@ -35,7 +34,6 @@ namespace Facer.Data
         
         public string FirstName { get { return _firstname; } set { _firstname = value; UpdateStorage(); } }
         public string LastName { get { return _lastname; } set { _lastname = value; UpdateStorage(); } }
-        public string ServerID { get { return _serverID; } set { _serverID = value; UpdateStorage(); } }
 
         private void UpdateStorage()
         {
@@ -45,7 +43,7 @@ namespace Facer.Data
             }
         }
 
-        public static void BindToStorage(DataStorage ds)
+        public void BindToStorage(DataStorage ds)
         {
             DataStorage = ds;
         }
@@ -63,21 +61,13 @@ namespace Facer.Data
 
         public static string IsValidID(string id)
         {
-            int idi = 0;
-            if (int.TryParse(id, out idi))
+            if (!App.Reference.Data.IDExists(id))
             {
-                if (!App.Reference.Data.IDExists(idi))
-                {
-                    return null;
-                }
-                else
-                {
-                    return "ID already exists!";
-                }
+                return null;
             }
             else
             {
-                return "ID Must be a valid integer!";
+                return "ID already exists!";
             }
         }
     }

@@ -8,8 +8,8 @@ namespace Facer.FaceApi
 {
     public struct Person
     {
-        public string PersonID { get; set; }
-        public string Name { get; set; }
+        public string ServerID { get; set; }
+        public string LocalID { get; set; }
         public object UserData { get; set; }
         public string[] PersistedFacesIDs { get; set; }
     }

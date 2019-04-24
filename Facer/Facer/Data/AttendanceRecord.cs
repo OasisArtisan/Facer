@@ -10,7 +10,7 @@ namespace Facer.Data
         private DataStorage DataStorage;
         private bool _valid;
         private DateTime _date;
-        private Dictionary<int, Student> _attendedStudents;
+        private Dictionary<string, Student> _attendedStudents;
         private string _attendedStudentsSerialized;
 
         public string Formatted { get
@@ -43,7 +43,7 @@ namespace Facer.Data
                 if (_attendedStudentsSerialized == null)
                 {
                     StringBuilder sb = new StringBuilder();
-                    foreach (int id in _attendedStudents.Keys)
+                    foreach (string id in _attendedStudents.Keys)
                     {
                         sb.Append(id);
                         sb.Append(",");
@@ -65,13 +65,13 @@ namespace Facer.Data
 
         public AttendanceRecord()
         {
-            _attendedStudents = new Dictionary<int, Student>();
+            _attendedStudents = new Dictionary<string, Student>();
             _attendedStudentsSerialized = "";
         }
 
         // Populates the local dictionary with student objects that are obtained by looking up
         // the keys stored in the _attendedStudentsSerialized field
-        public void Deserialize(Dictionary<int, Student> EnrolledStudents)
+        public void Deserialize(Dictionary<string, Student> EnrolledStudents)
         {
             if(_attendedStudentsSerialized.Length == 0)
             {
@@ -80,12 +80,11 @@ namespace Facer.Data
             string[] ids = _attendedStudentsSerialized.Split(',');
             foreach (string id in ids)
             {
-                int i = int.Parse(id);
                 Student st = null;
                 // Ignore ids that are not included anymore in the enrolled students list
-                if (EnrolledStudents.TryGetValue(i, out st))
+                if (EnrolledStudents.TryGetValue(id, out st))
                 {
-                    _attendedStudents.Add(i, st);
+                    _attendedStudents.Add(id, st);
                 }
             }
         }
@@ -108,12 +107,12 @@ namespace Facer.Data
 
         // Observer Methods
 
-        public Dictionary<int, Student>.Enumerator EnumerateAttendedStudents()
+        public IEnumerable<Student> EnumerateAttendedStudents()
         {
-            return _attendedStudents.GetEnumerator();
+            return _attendedStudents.Values;
         }
 
-        public Student GetStudent(int id)
+        public Student GetStudent(string id)
         {
             Student st = null;
             _attendedStudents.TryGetValue(id, out st);

@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Facer.FaceApi;
 
 namespace Facer.Pages
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class AttendanceRecordsPage : ContentPage
+	public partial class AttendanceRecordsPage : CustomContentPage
 	{
 		public AttendanceRecordsPage ()
 		{
@@ -29,46 +30,21 @@ namespace Facer.Pages
                  AttendanceRecordsListView.ItemsSource = App.Reference.Data.AttendanceRecordsEnumerable();
                  AttendanceRecordsListView.EndRefresh();
              };
+            AttendanceRecordsListView.ItemTapped += (s, e) =>
+            {
+                Navigation.PushModalAsync(new AttendanceRecordDetails((AttendanceRecord)e.Item));
+            };
         }
 
-        public async void AddRecord(object o, EventArgs e)
+        public void AddRecord(object o, EventArgs e)
         {
-            string response = await DisplayActionSheet(null, "Cancel", null, "Take Picture", "Choose Picture");
-            if (response == null || response.Length == 0 || response.Equals("Cancel"))
-            {
-                return;
-            }
-            MediaFile imgFile = null;
-            if (response.Equals("Take Picture"))
-            {
-                imgFile = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions()
-                {
-                    SaveToAlbum = true,
-                    Directory = "FacerAttendance",
-                    Name = "class"
-                });
-            }
-            else if (response.Equals("Choose Picture"))
-            {
-                imgFile = await CrossMedia.Current.PickPhotoAsync();
-            }
-            AttendanceRecord ar = new AttendanceRecord()
-            {
-                Date = DateTime.Now
-            };
-            foreach(Student st in GetAttendanceFromPicture(imgFile))
-            {
-                ar.AddStudent(st);
-            }
-            App.Reference.Data.CreateAttendanceRecord(ar);
+            IdentificationPage ip = new IdentificationPage(this);
+            ip.TakeRecordImage(o,e);
+        }
+
+        public override void Refresh()
+        {
             AttendanceRecordsListView.BeginRefresh();
         }
-
-        // [TODO:ABDULLAH]
-        public List<Student> GetAttendanceFromPicture(MediaFile mf)
-        {
-            System.IO.File.Delete(mf.Path);
-            return new List<Student>();
-        }
-	}
+    }
 }
