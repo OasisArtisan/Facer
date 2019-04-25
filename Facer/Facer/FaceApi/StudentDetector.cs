@@ -16,7 +16,7 @@ namespace Facer.FaceApi
         private string _groupID;
         private string _groupName = "MainGroup";
         private List<Person> _allPeople = null;
-
+        private bool _groupDeletedFlag;
         
         #endregion
 
@@ -31,18 +31,9 @@ namespace Facer.FaceApi
             string groupName = "MainGroup";
             string groupID = "123456";
 
-            // Get List of all the available groups on the server
-            var groups = await PersonGroupManager.GetPersongroups(SharedData.SubscriptionKey);
-
-            // If no group are there, make one...
-            if(groups.Count < 1)
-            {
-                await PersonGroupManager.CreatPersongroup(groupName, groupID, SharedData.SubscriptionKey);
-            }
-            else // If there is/are group/s take the ID of the first one
-            {
-                groupID = groups[0].PersonGroupID;
-            }
+            // Make new group if needed and return the groupID or if group is already there return it ID
+            string _grpID = await MakeServerGroup(groupID, groupName);
+            groupID = _grpID == string.Empty ? groupID : _grpID;
 
             // Return the newly created "StudentDetector" object 
             return new StudentDetector(groupID);
@@ -168,20 +159,73 @@ namespace Facer.FaceApi
             TrainingUpdated = true;
             return result;
         }
+
+        public async Task<bool> DeletePerson(Student student)
+        {
+            var person = await GetStudentByID(student.ID);
+
+            return await _pManager.DeletePerson(_groupID, person.ServerID);
+        }
+
+        public async Task<bool> ResetGroup()
+        {
+
+            var result = await _gManager.DeletePersonGroup(_groupID);
+
+            if(result)
+            {
+                _groupDeletedFlag = true;
+                return result;
+            }
+            return result;
+        }
         #endregion
 
         #region Helper Function
         private async Task<Person> GetStudentByID(string id)
         {
-            _allPeople = await _pManager.GetAllPersons(_groupID);
+            if(_groupDeletedFlag == true)
+            {
+                _allPeople = await _pManager.GetAllPersons(_groupID);
+            }
+            
             foreach (Person p in _allPeople)
             {
                 Console.WriteLine($"LocalID: {p.LocalID} ServerID: {p.ServerID} id: {id}");
             }
             return _allPeople.Find(x => x.ServerID == id);
         }
+
+        /// <summary>
+        /// If there is no groups in the cloud this function will make one with the paramerter provided and it will return Empty String, 
+        /// if ther is a one in the cloud it will return the new ID for the group in the cloud.
+        /// </summary>
+        /// <param name="groupID"></param>
+        /// <param name="groupName"></param>
+        /// <returns></returns>
+        private async static Task<string> MakeServerGroup(string groupID, string groupName)
+        {
+            // Get List of all the available groups on the server
+            var groups = await PersonGroupManager.GetPersongroups(SharedData.SubscriptionKey);
+            Console.WriteLine($"List is here with lenght: {groups.Count}");
+
+            // If no group are there, make one...
+            if(groups.Count < 1)
+            {
+                await PersonGroupManager.CreatPersongroup(groupName, groupID, SharedData.SubscriptionKey);
+                Console.WriteLine("New group is created...");
+                return string.Empty;
+            }
+            else // If there is/are group/s take the ID of the first one
+            {
+                groupID = groups[0].PersonGroupID;
+                Console.WriteLine($"Group ID got {groupID}");
+                return groupID;
+            }
+        }
+
         #endregion
     }
 
-    
+
 }

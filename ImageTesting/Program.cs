@@ -80,9 +80,9 @@ namespace ImageTesting
             Console.WriteLine("Done Identification...");
             foreach(var p in dict.Keys)
             {
-                if(p.Name != null && p.Name.Length > 1)
+                if(p.LocalID != null && p.LocalID.Length > 1)
                 {
-                    Console.WriteLine($"Person:{p.Name}, Confidence: {dict[p].Confidence}");
+                    Console.WriteLine($"Person:{p.LocalID}, Confidence: {dict[p].Confidence}");
                 }
                 else
                     Console.WriteLine("Unknown Person...");
@@ -153,16 +153,16 @@ namespace ImageTesting
             var identified = await faceApi.IdentifyPerson(group1ID, 3, 0.7, faces.Select<Face, string>(x => x.faceId).ToArray<string>());
             foreach(var iden in identified)
             {
-                Person? person = null;
+                Person person = null;
                 if(iden.candidates.Length == 0)
                 {
                     Console.WriteLine("Face is not identified");
                 }
                 else
                 {
-                    person = persons.Find(x => x.PersonID == iden.candidates[0].personId);
+                    person = persons.Find(x => x.LocalID == iden.candidates[0].personId);
                     if(person != null)
-                        Console.WriteLine($"The person in the image is: {person.Value.Name}");
+                        Console.WriteLine($"The person in the image is: {person.LocalID}");
                     else
                         Console.WriteLine("No person is found");
                 }

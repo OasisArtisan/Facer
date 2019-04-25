@@ -11,30 +11,23 @@ namespace Test
         
         public static void Main(string[] args)
         {
-            var a = new SA("S", 12);
-            var b = new SA("S", 12);
-
-            var dict = new Dictionary<SA, int>();
-            
-            Console.WriteLine((a.Equals(b)));
-            Console.WriteLine((b.Equals(a)));
-
+            var c = new A();
+            c.printer();
             Console.ReadKey();
         }
     }
 
-    struct SA
+    class A
     {
-        public SA(string name, int age)
+        public void printer()
         {
-            Name = name;
-            Age = age;
+            string value = "AAA";
+            stringChanger(value);
+            Console.WriteLine(value);
         }
-        public string Name { get; set; }
-        public int Age { get; set; }
-    }
-
-    struct SB
-    {
+        private void stringChanger(string val)
+        {
+            val = "hhh";
+        }
     }
 }

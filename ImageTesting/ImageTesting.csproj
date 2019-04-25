@@ -80,13 +80,13 @@
     <Compile Include="FaceApi\Group.cs" />
     <Compile Include="FaceApi\GroupManager.cs" />
     <Compile Include="FaceApi\IdentificationCandidate.cs" />
+    <Compile Include="FaceApi\Person.cs" />
     <Compile Include="FaceApi\Service.cs" />
     <Compile Include="FaceApi\StringHelper.cs" />
     <Compile Include="FaceApi\IdentificationInfo.cs" />
     <Compile Include="FaceApi\ImageAnalyzer\FaceDetectionRequest.cs" />
     <Compile Include="FaceApi\ImageAnalyzer\ImageModify.cs" />
     <Compile Include="FaceApi\ImageAnalyzer\ImageReady.cs" />
-    <Compile Include="FaceApi\Person.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FaceApi\SharedData.cs" />
