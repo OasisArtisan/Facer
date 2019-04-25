@@ -10,6 +10,7 @@ namespace Facer.Data
 {
     class SQLiteDataStorage : DataStorage
     {
+        // Should use SQLiteAsyncConnection instead
         private SQLiteConnection Database;
 
         public SQLiteDataStorage(string dbPath, string dbName)
@@ -26,6 +27,7 @@ namespace Facer.Data
 
         public override void EnrollStudent(Student st)
         {
+            Console.WriteLine($"[SQLiteDataStorage] Enrolling student: {st.Formatted}");
             st.BindToStorage(this);
             _enrolledStudents.Add(st.ID, st);
             Database.Insert(st);
@@ -33,11 +35,14 @@ namespace Facer.Data
 
         public override void RemoveStudent(Student st)
         {
+            // Caution: This method does not remove the student from attendance records
+            Console.WriteLine($"[SQLiteDataStorage] Removing student: {st.Formatted}");
             RemoveStudent(st.ID);
         }
 
-        public override void RemoveStudent(int id)
+        public override void RemoveStudent(string id)
         {
+            Console.WriteLine($"[SQLiteDataStorage] Removing student: {id}");
             // Caution: This method does not remove the student from attendance records
             _enrolledStudents.Remove(id);
             Database.Delete<Student>(id);
@@ -45,17 +50,20 @@ namespace Facer.Data
 
         public override void UpdateStudent(Student st)
         {
+            Console.WriteLine($"[SQLiteDataStorage] Updating student: {st.Formatted}");
             Database.Update(st);
         }
 
         public override void ClearStudents()
         {
+            Console.WriteLine("[SQLiteDataStorage] Clearing students");
             _enrolledStudents.Clear();
             Database.DeleteAll<Student>();
         }
 
         public override void CreateAttendanceRecord(AttendanceRecord ar)
         {
+            Console.WriteLine($"[SQLiteDataStorage] Creating attendance record: {ar.Formatted}");
             ar.BindToStorage(this);
             _attendanceRecords.Add(ar.Date,ar);
             Database.InsertOrReplace(ar);
@@ -63,34 +71,40 @@ namespace Facer.Data
 
         public override void RemoveAttendanceRecord(AttendanceRecord ar)
         {
+            Console.WriteLine($"[SQLiteDataStorage] Removing attendance record: {ar.Formatted}");
             RemoveAttendanceRecord(ar.Date);
         }
 
         public override void RemoveAttendanceRecord(DateTime dt)
         {
+            Console.WriteLine($"[SQLiteDataStorage] Removing attendance record: {dt}");
             _attendanceRecords.Remove(dt);
             Database.Delete<AttendanceRecord>(dt);
         }
 
         public override void UpdateAttendanceRecord(AttendanceRecord ar)
         {
+            Console.WriteLine($"[SQLiteDataStorage] Updating attendance record: {ar.Formatted}");
             Database.InsertOrReplace(ar);
         }
 
         public override void ClearAttendanceRecords()
         {
+            Console.WriteLine($"[SQLiteDataStorage] Clearing attendance records");
             Database.DeleteAll<AttendanceRecord>();
         }
 
         public override void ClearData()
         {
+            Console.WriteLine("[SQLiteDataStorage] Clearing all data");
             ClearAttendanceRecords();
             ClearStudents();
         }
 
         public override void LoadData()
         {
-            _enrolledStudents = new Dictionary<int, Student>();
+            Console.WriteLine("[SQLiteDataStorage] Loading data");
+            _enrolledStudents = new Dictionary<string, Student>();
             List<Student> stlist = Database.Query<Student>("SELECT * FROM Student");
             foreach (Student st in stlist)
             {
@@ -111,6 +125,5 @@ namespace Facer.Data
         {
             Database.Close();
         }
-
     }
 }

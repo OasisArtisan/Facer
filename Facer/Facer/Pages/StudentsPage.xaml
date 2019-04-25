@@ -1,8 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:pages="clr-namespace:Facer.Pages"
-             x:Class="Facer.Pages.StudentsPage">
+<facer_pages:CustomContentPage
+    xmlns:facer_pages="clr-namespace:Facer.Pages"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Facer.Pages"
+    x:Class="Facer.Pages.StudentsPage">
     <StackLayout>
         <ListView x:Name="StudentListView" VerticalOptions="FillAndExpand" IsPullToRefreshEnabled="True"
                   SelectionMode="None">
@@ -14,4 +16,4 @@
         </ListView>
         <Button x:Name="AddStudentButton" Text="+"/>
     </StackLayout>
-</ContentPage>
+</facer_pages:CustomContentPage>

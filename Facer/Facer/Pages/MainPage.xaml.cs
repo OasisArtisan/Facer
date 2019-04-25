@@ -15,8 +15,6 @@ namespace Facer.Pages
         public MainPage ()
         {
             InitializeComponent();
-
-
         }
     }
 }

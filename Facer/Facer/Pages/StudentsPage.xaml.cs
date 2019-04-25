@@ -10,13 +10,13 @@ using Xamarin.Forms.Xaml;
 
 namespace Facer.Pages
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class StudentsPage : ContentPage
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class StudentsPage : CustomContentPage
 	{
 		public StudentsPage ()
 		{
 			InitializeComponent ();
-            AddStudentButton.Clicked += EditStudent;
+            AddStudentButton.Clicked += AddStudent;
             StudentListView.ItemsSource = App.Reference.Data.EnrolledStudentsEnumerable();
             StudentListView.Refreshing += (s, e) =>
             {
@@ -27,14 +27,18 @@ namespace Facer.Pages
                 StudentListView.ItemsSource = App.Reference.Data.EnrolledStudentsEnumerable();
                 StudentListView.EndRefresh();
             };
+            StudentListView.ItemTapped += (s, e) =>
+            {
+                Navigation.PushModalAsync(new StudentDetails(this,e.Item as Student));
+            };
         }
 
-        public void EditStudent(object o, EventArgs e)
+        public void AddStudent(object o, EventArgs e)
         {
-            Navigation.PushModalAsync(new EditStudentPage(this));
+            Navigation.PushModalAsync(new AddStudentPage(this));
         }
-
-        public void UpdateListView()
+        
+        public override void Refresh()
         {
             StudentListView.BeginRefresh();
         }

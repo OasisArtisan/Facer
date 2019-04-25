@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<facer_pages:CustomContentPage
+    xmlns:facer_pages="clr-namespace:Facer.Pages"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Facer.Pages.StudentDetails">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label x:Name="NameLabel"/>
+            <Label x:Name="PercentageLabel"/>
+            <Button x:Name="DeleteButton" Text="Delete"/>
+            <Button x:Name="EditButton" Text="Edit"/>
+            <Button x:Name="CancelButton" Text="Cancel"/>
+        </StackLayout>
+    </ContentPage.Content>
+</facer_pages:CustomContentPage>

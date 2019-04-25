@@ -7,7 +7,7 @@ using Facer.Data;
 
 namespace Facer.FaceApi
 {
-    class StudentDetector 
+    public class StudentDetector 
     {
         #region Private Data
         private string _key = SharedData.SubscriptionKey;
@@ -21,7 +21,7 @@ namespace Facer.FaceApi
         #endregion
 
         #region Public Data
-
+        public bool TrainingUpdated;
         #endregion
 
         #region Constructor
@@ -62,16 +62,19 @@ namespace Facer.FaceApi
 
         public async Task AddStudentAsync(Student s, params string[] images)
         {
-            var studentID = await _pManager.CreatPerson(_groupID, ($"{s.FirstName} {s.LastName}"));
-            s.ServerID = studentID;
+            Console.WriteLine($"[StudentDetector] Adding {s.Formatted}");
+            var studentID = await _pManager.CreatPerson(_groupID, ($"{s.ID}"));
             foreach(var image in images)
             {
+                Console.WriteLine($"[StudentDetector] Adding Image Path: {image}");
                 await _pManager.AddPersonFace(_groupID, studentID, image);
             }
+            TrainingUpdated = false;
         }
 
         public async Task<Dictionary<string, FaceRectangle>> Detect(string imagePath, FaceApi api = null)
         {
+            Console.WriteLine($"[StudentDetector] Detecting image in path: {imagePath}");
             // Assign appripriate FaceApi Tool >>> this is done this way for the sake of "Identify" method
             FaceApi faceTools;
             if(api == null)
@@ -95,11 +98,16 @@ namespace Facer.FaceApi
 
         public async Task<Dictionary<Person, IdentificationInfo>> Identify(string path)
         {
+            Console.WriteLine($"[StudentDetector] Identifying image in path: {path}");
+            if(!TrainingUpdated)
+            {
+                await TrainGroup();
+            }
             var faceTools = new FaceApi(new ImageReady(path));
 
             // Detect Faces
             var facesDict = await Detect(path, faceTools);
-
+            Console.WriteLine($"[StudentDetector] Detected {facesDict.Count} faces.");
             // Saperate facesID
             var facesIDs = facesDict.Keys.ToArray<string>();
 
@@ -126,6 +134,7 @@ namespace Facer.FaceApi
                     { 
                         var id = iden.candidates[0].personId;
                         var person = await GetStudentByID(id);
+                        Console.WriteLine($"[StudentDetector] Found candidate {person.LocalID}");
                         finalResult.Add(person, new IdentificationInfo(facesDict[iden.faceId], iden.candidates[0].confidence));
                     }
                 }
@@ -135,15 +144,28 @@ namespace Facer.FaceApi
                 if(counter % 2 == 0)
                     await Task.Delay(30000);
             }
-
+            string peopleIdentified = "";
+            int identified = 0;
+            Console.WriteLine("-------------------HohHOHOHOOHOHOHOHOHOOO----------------");
+            foreach(Person p in finalResult.Keys)
+            {
+                if(p.LocalID == null)
+                {
+                    continue;
+                }
+                peopleIdentified += $"\nID:{p.LocalID} CONF:{finalResult[p].Confidence*100f}%";
+                identified++;
+            }
+            Console.WriteLine($"[StudentDetector] Identified {identified}/{facesDict.Count}.{peopleIdentified}");
             return finalResult;
 
         }
         
         public async Task<bool> TrainGroup()
         {
+            Console.WriteLine("[StudentDetector] Training Group...");
             var result = await _gManager.TrainPersonGroup(_groupID);
-
+            TrainingUpdated = true;
             return result;
         }
         #endregion
@@ -151,14 +173,12 @@ namespace Facer.FaceApi
         #region Helper Function
         private async Task<Person> GetStudentByID(string id)
         {
-            if(_allPeople == null)
+            _allPeople = await _pManager.GetAllPersons(_groupID);
+            foreach (Person p in _allPeople)
             {
-                _allPeople = await _pManager.GetAllPersons(_groupID);
+                Console.WriteLine($"LocalID: {p.LocalID} ServerID: {p.ServerID} id: {id}");
             }
-
-            var ss = await _pManager.GetAllPersons(_groupID);
-
-            return ss.Find(x => x.PersonID == id);
+            return _allPeople.Find(x => x.ServerID == id);
         }
         #endregion
     }

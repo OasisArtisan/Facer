@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Facer.Pages.AttendanceRecordsPage">
+<facer_pages:CustomContentPage
+    xmlns:facer_pages="clr-namespace:Facer.Pages"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Facer.Pages.AttendanceRecordsPage">
     <StackLayout>
         <Image x:Name="image"/>
         <ListView x:Name="AttendanceRecordsListView" VerticalOptions="FillAndExpand" IsPullToRefreshEnabled="True" SelectionMode="None">
@@ -13,4 +15,4 @@
         </ListView>
         <Button Text="+" x:Name="AddRecordButton"/>
     </StackLayout>
-</ContentPage>
+</facer_pages:CustomContentPage>

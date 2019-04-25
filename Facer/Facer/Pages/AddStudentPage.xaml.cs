@@ -12,18 +12,17 @@ using Xamarin.Forms.Xaml;
 namespace Facer.Pages
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class EditStudentPage : ContentPage
+	public partial class AddStudentPage : CustomContentPage
 	{
         private StudentsPage _parent;
-        private Dictionary<Image, MediaFile> _imageFiles;
+        private Dictionary<Image, string> _imageFiles;
 
-        public EditStudentPage(StudentsPage parent) : this(parent, new Student())
+        public AddStudentPage(StudentsPage parent) : this(parent, new Student())
         {
         }
-        public EditStudentPage (StudentsPage parent, Student student)
+        public AddStudentPage (StudentsPage page, Student student)
 		{
-            _parent = parent;
-            
+            _parent = page;
             InitializeComponent ();
             if(student.Valid)
             {
@@ -33,7 +32,7 @@ namespace Facer.Pages
             CancelButton.Clicked += Cancel;
             SaveButton.Clicked += SaveStudent;
 
-            _imageFiles = new Dictionary<Image, MediaFile>();
+            _imageFiles = new Dictionary<Image, string>();
             foreach (View v in ImageArea.Children)
             {
                 _imageFiles.Add((Image)v, null);
@@ -63,36 +62,39 @@ namespace Facer.Pages
                 return;
             }
             // If this slot already has an image then delete its temporary file
-            MediaFile imgFile = _imageFiles[img];
+            string imgFile = _imageFiles[img];
             if (imgFile != null)
             {
-                System.IO.File.Delete(imgFile.Path);
+                System.IO.File.Delete(imgFile);
                 _imageFiles[img] = null;
             }
             // Get image either by camera or from gallery
+            MediaFile imgMediaFile = null;
             if (response.Equals("Take Picture"))
             {
-                imgFile = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions() {
+                imgMediaFile = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions() {
                     SaveToAlbum = true,
                     Directory = "FacerTraining",
                     Name = "student"
                 });
+                Console.WriteLine($"[AddStudentPage] image captured. Path: {imgMediaFile.Path}");
             } else if(response.Equals("Choose Picture"))
             {
-                imgFile = await CrossMedia.Current.PickPhotoAsync();
+                imgMediaFile = await CrossMedia.Current.PickPhotoAsync();
+                Console.WriteLine($"[AddStudentPage] image chosen. Path: {imgMediaFile.Path}");
             }
             // Display acquired image
             img.Source = ImageSource.FromStream(() =>
             {
-                return imgFile.GetStream();
+                return imgMediaFile.GetStream();
             });
 
-            _imageFiles[img] = imgFile;
+            _imageFiles[img] = imgMediaFile.Path;
             // If we have acquired all images then we enable the save button
             bool completedImages = true;
-            foreach (MediaFile mf in _imageFiles.Values)
+            foreach (string i in _imageFiles.Values)
             {
-                if(mf == null)
+                if(i == null)
                 {
                     completedImages = false;
                     break;
@@ -101,40 +103,33 @@ namespace Facer.Pages
             SaveButton.IsEnabled = completedImages;
         }
 
-        public void SaveStudent(object s, EventArgs e)
+        public async void SaveStudent(object s, EventArgs e)
         {
             if (Student.IsValidID(IDEntry.Text) == null)
             {
                 Student st = new Student()
                 {
-                    ID = int.Parse(IDEntry.Text),
+                    ID = IDEntry.Text,
                     FirstName = FirstNameEntry.Text,
                     LastName = LastNameEntry.Text
                 };
+                await Navigation.PopModalAsync();
+                await App.Reference.FaceAPI.AddStudentAsync(st, _imageFiles.Values.ToArray());
                 App.Reference.Data.EnrollStudent(st);
-                TrainOnStudent(st, _imageFiles.Values);
-                Navigation.PopModalAsync();
-                _parent.UpdateListView();
+                // Delete temporary files
+                foreach (string path in _imageFiles.Values)
+                {
+                    System.IO.File.Delete(path);
+                }
+                _parent.Refresh();
             } else
             {
-                DisplayAlert("Invalid Student", "Cannot add student, ID must be valid!", "Ok");
+                await DisplayAlert("Invalid Student", "Cannot add student, ID must be valid!", "Ok");
             }
         }
-        public void Cancel(object s, EventArgs e)
+        public async void Cancel(object s, EventArgs e)
         {
-            Navigation.PopModalAsync();
-        }
-
-        // [TODO:Abdullah]
-        public void TrainOnStudent(Student st, IEnumerable<MediaFile> images)
-        {
-            // Training logic
-
-            //Dispose of temporary images
-            foreach (var i in images)
-            {
-                System.IO.File.Delete(i.Path);
-            }
+            await Navigation.PopModalAsync();
         }
     }
 }

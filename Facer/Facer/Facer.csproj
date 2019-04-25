@@ -16,25 +16,37 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Config.txt" />
+    <Compile Remove="Program.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Config.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="SkiaSharp.Views.Forms" Version="1.68.0" />
     <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
     <PackageReference Include="Xam.Plugin.Media" Version="4.0.1.5" />
-    <PackageReference Include="Xamarin.Forms" Version="3.6.0.264807" />
+    <PackageReference Include="Xamarin.Forms" Version="3.6.0.344457" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Pages\AddStudentPage.xaml.cs">
+      <DependentUpon>AddStudentPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\IdentificationPage.xaml.cs">
+      <DependentUpon>IdentificationPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="Pages\AttendanceRecordsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Pages\EditStudentPage.xaml">
+    <EmbeddedResource Update="Pages\AddStudentPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Pages\ChooseStudentPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Pages\IdentificationPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Pages\MainPage.xaml">
