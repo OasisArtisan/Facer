@@ -18,12 +18,15 @@ namespace Facer
 
         private DataStorage _data;
         private StudentDetector _faceAPI;
+        private Printer _printer;
         public DataStorage Data { get { return _data; } }
         public StudentDetector FaceAPI { get { return _faceAPI; } }
+        public Printer Printer { get { return _printer; } }
 
         public App()
         {
             _reference = this;
+            _printer = new Printer();
             InitializeComponent();
             _data = new SQLiteDataStorage(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), DataStorageFileName);
             _data.LoadData();

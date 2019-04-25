@@ -114,9 +114,9 @@ namespace Facer.FaceApi
 
             var uri = SharedData.ServerLocation + "/" + groupID + "/training" + queryString;
 
-            Console.WriteLine(uri);
+            App.Reference.Printer.PrintLine(uri);
             var response = await client.GetAsync(uri);
-            Console.WriteLine(await response.Content.ReadAsStringAsync());
+            App.Reference.Printer.PrintLine(await response.Content.ReadAsStringAsync());
 
             // $$ Example of returned data $$$
 

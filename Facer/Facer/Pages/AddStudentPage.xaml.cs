@@ -77,11 +77,11 @@ namespace Facer.Pages
                     Directory = "FacerTraining",
                     Name = "student"
                 });
-                Console.WriteLine($"[AddStudentPage] image captured. Path: {imgMediaFile.Path}");
+                App.Reference.Printer.PrintLine($"[AddStudentPage] image captured. Path: {imgMediaFile.Path}");
             } else if(response.Equals("Choose Picture"))
             {
                 imgMediaFile = await CrossMedia.Current.PickPhotoAsync();
-                Console.WriteLine($"[AddStudentPage] image chosen. Path: {imgMediaFile.Path}");
+                App.Reference.Printer.PrintLine($"[AddStudentPage] image chosen. Path: {imgMediaFile.Path}");
             }
             // Display acquired image
             img.Source = ImageSource.FromStream(() =>

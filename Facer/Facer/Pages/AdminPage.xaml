@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<facer_pages:CustomContentPage
+    xmlns:facer_pages="clr-namespace:Facer.Pages"
+    xmlns:facer="clr-namespace:Facer"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Facer.Pages.AdminPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Button x:Name="ClearDataButton" Text="Clear Data" TextColor="Red"/>
+            <Button x:Name="ClearConsoleButton" Text="Clear Console"/>
+            <facer:ConsoleView x:Name="ConsoleOutputView" VerticalOptions="FillAndExpand"/>
+        </StackLayout>
+    </ContentPage.Content>
+</facer_pages:CustomContentPage>

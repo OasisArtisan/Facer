@@ -83,7 +83,7 @@ namespace Facer.FaceApi
             var uri = $"{SharedData.ServerLocation}/{groupID}/persons";
 
             var response = client.GetAsync(uri);
-            Console.WriteLine($"[PersonManager] response: {await response.Result.Content.ReadAsStringAsync()}");
+            App.Reference.Printer.PrintLine($"[PersonManager] response: {await response.Result.Content.ReadAsStringAsync()}");
             return JsonConvert.DeserializeObject<List<Person>>(response.Result.Content.ReadAsStringAsync().Result);
         }
 

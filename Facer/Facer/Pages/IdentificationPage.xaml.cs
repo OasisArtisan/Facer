@@ -31,9 +31,9 @@ namespace Facer.Pages
 
         public async void TakeRecordImage(object o, EventArgs e)
         {
-            Console.WriteLine("[IdentificationPage] Adding Record");
+            App.Reference.Printer.PrintLine("[IdentificationPage] Adding Record");
             string response = await _parent.DisplayActionSheet(null, "Cancel", null, "Take Picture", "Choose Picture", "Create Empty Record");
-            Console.WriteLine($"[IdentificationPage] Received '{response}' response.");
+            App.Reference.Printer.PrintLine($"[IdentificationPage] Received '{response}' response.");
             if (response == null || response.Length == 0 || response.Equals("Cancel"))
             {
                 return;
@@ -57,12 +57,12 @@ namespace Facer.Pages
                     Directory = "FacerAttendance",
                     Name = "class"
                 });
-                Console.WriteLine($"[IdentificationPage] image captured. Path: {imgFile.Path}");
+                App.Reference.Printer.PrintLine($"[IdentificationPage] image captured. Path: {imgFile.Path}");
             }
             else if (response.Equals("Choose Picture"))
             {
                 imgFile = await CrossMedia.Current.PickPhotoAsync();
-                Console.WriteLine($"[IdentificationPage] image chosen. Path: {imgFile.Path}");
+                App.Reference.Printer.PrintLine($"[IdentificationPage] image chosen. Path: {imgFile.Path}");
             }
             tempfile = imgFile.Path;
             // Detect and identify people in the image
@@ -87,7 +87,7 @@ namespace Facer.Pages
             }
             resultText += $"Identified {identified} faces.";
             resultText += peopleIdentified;
-            ResultsView.Text = resultText;
+            ResultsLabel.Text = resultText;
 
             await _parent.Navigation.PushModalAsync(this);
         }

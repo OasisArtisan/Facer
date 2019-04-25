@@ -7,7 +7,7 @@
     <ContentPage.Content>
         <StackLayout>
             <Image x:Name="ImageView"/>
-            <Editor x:Name="ResultsView" IsEnabled="False"/>
+            <Label x:Name="ResultsLabel" IsEnabled="False"/>
             <Button x:Name="AcceptButton" Text="Accept"/>
             <Button x:Name="CancelButton" Text="Cancel"/>
         </StackLayout>

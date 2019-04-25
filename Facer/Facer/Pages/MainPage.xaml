@@ -5,5 +5,6 @@
             xmlns:local="clr-namespace:Facer.Pages">
     <local:AttendanceRecordsPage x:Name="AttendanceRecordsPage" Title="Attendance"/>
     <local:StudentsPage x:Name="StudentsPage" Title="Students"/>
+    <local:AdminPage x:Name="AdminPage" Title="Admin"/>
 </TabbedPage>
     

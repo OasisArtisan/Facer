@@ -60,11 +60,11 @@ namespace Facer.FaceApi
 
         public async Task AddStudentAsync(Student s, params string[] images)
         {
-            Console.WriteLine($"[StudentDetector] Adding {s.Formatted}");
+            App.Reference.Printer.PrintLine($"[StudentDetector] Adding {s.Formatted}");
             var studentID = await _pManager.CreatPerson(_groupID, ($"{s.ID}"));
             foreach(var image in images)
             {
-                Console.WriteLine($"[StudentDetector] Adding Image Path: {image}");
+                App.Reference.Printer.PrintLine($"[StudentDetector] Adding Image Path: {image}");
                 await _pManager.AddPersonFace(_groupID, studentID, image);
             }
             TrainingUpdated = false;
@@ -72,7 +72,7 @@ namespace Facer.FaceApi
 
         public async Task<Dictionary<string, FaceRectangle>> Detect(string imagePath, FaceApi api = null)
         {
-            Console.WriteLine($"[StudentDetector] Detecting image in path: {imagePath}");
+            App.Reference.Printer.PrintLine($"[StudentDetector] Detecting image in path: {imagePath}");
             // Assign appripriate FaceApi Tool >>> this is done this way for the sake of "Identify" method
             FaceApi faceTools;
             if(api == null)
@@ -96,7 +96,7 @@ namespace Facer.FaceApi
 
         public async Task<Dictionary<Person, IdentificationInfo>> Identify(string path)
         {
-            Console.WriteLine($"[StudentDetector] Identifying image in path: {path}");
+            App.Reference.Printer.PrintLine($"[StudentDetector] Identifying image in path: {path}");
             if(!TrainingUpdated)
             {
                 await TrainGroup();
@@ -105,7 +105,7 @@ namespace Facer.FaceApi
 
             // Detect Faces
             var facesDict = await Detect(path, faceTools);
-            Console.WriteLine($"[StudentDetector] Detected {facesDict.Count} faces.");
+            App.Reference.Printer.PrintLine($"[StudentDetector] Detected {facesDict.Count} faces.");
             // Saperate facesID
             var facesIDs = facesDict.Keys.ToArray<string>();
 
@@ -132,7 +132,7 @@ namespace Facer.FaceApi
                     { 
                         var id = iden.candidates[0].personId;
                         var person = await GetStudentByID(id);
-                        Console.WriteLine($"[StudentDetector] Found candidate {person.LocalID}");
+                        App.Reference.Printer.PrintLine($"[StudentDetector] Found candidate {person.LocalID}");
                         finalResult.Add(person, new IdentificationInfo(facesDict[iden.faceId], iden.candidates[0].confidence));
                     }
                 }
@@ -144,7 +144,7 @@ namespace Facer.FaceApi
             }
             string peopleIdentified = "";
             int identified = 0;
-            Console.WriteLine("-------------------HohHOHOHOOHOHOHOHOHOOO----------------");
+            App.Reference.Printer.PrintLine("-------------------HohHOHOHOOHOHOHOHOHOOO----------------");
             foreach(Person p in finalResult.Keys)
             {
                 if(p.LocalID == null)
@@ -154,14 +154,14 @@ namespace Facer.FaceApi
                 peopleIdentified += $"\nID:{p.LocalID} CONF:{finalResult[p].Confidence*100f}%";
                 identified++;
             }
-            Console.WriteLine($"[StudentDetector] Identified {identified}/{facesDict.Count}.{peopleIdentified}");
+            App.Reference.Printer.PrintLine($"[StudentDetector] Identified {identified}/{facesDict.Count}.{peopleIdentified}");
             return finalResult;
 
         }
         
         public async Task<bool> TrainGroup()
         {
-            Console.WriteLine("[StudentDetector] Training Group...");
+            App.Reference.Printer.PrintLine("[StudentDetector] Training Group...");
             var result = await _gManager.TrainPersonGroup(_groupID);
             TrainingUpdated = true;
             return result;
@@ -174,7 +174,7 @@ namespace Facer.FaceApi
             _allPeople = await _pManager.GetAllPersons(_groupID);
             foreach (Person p in _allPeople)
             {
-                Console.WriteLine($"LocalID: {p.LocalID} ServerID: {p.ServerID} id: {id}");
+                App.Reference.Printer.PrintLine($"LocalID: {p.LocalID} ServerID: {p.ServerID} id: {id}");
             }
             return _allPeople.Find(x => x.ServerID == id);
         }
