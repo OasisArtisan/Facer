@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace Facer.FaceApi
 {
-    public struct Person
+    public class Person
     {
-        public string ServerID { get; set; }
-        public string LocalID { get; set; }
+        // Needed properties (From JSON returned from server)
+        public string personID { get; set; }
+        public string name { get; set; }
         public object UserData { get; set; }
         public string[] PersistedFacesIDs { get; set; }
+
+        // Convenient names
+        public string ServerID { get { return personID; } set {personID = value; } }
+        public string LocalID { get { return name; } set { name = value; } }
     }
 }

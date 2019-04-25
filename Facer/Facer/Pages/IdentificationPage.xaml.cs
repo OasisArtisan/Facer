@@ -18,17 +18,12 @@ namespace Facer.Pages
 	{
         private CustomContentPage _parent;
         private Dictionary<Person, IdentificationInfo> identificationResults;
-
+        private string tempfile;
 		public IdentificationPage (CustomContentPage parent)
 		{
             _parent = parent;
             InitializeComponent();
             AcceptButton.Clicked += AddRecord;
-            RetakeButton.Clicked += (o, e) =>
-            {
-                Navigation.PopModalAsync(false);
-                TakeRecordImage(o, e);
-            };
             CancelButton.Clicked += (o,e) => {
                 Navigation.PopModalAsync();
             };
@@ -69,6 +64,7 @@ namespace Facer.Pages
                 imgFile = await CrossMedia.Current.PickPhotoAsync();
                 Console.WriteLine($"[IdentificationPage] image chosen. Path: {imgFile.Path}");
             }
+            tempfile = imgFile.Path;
             // Detect and identify people in the image
             identificationResults = await App.Reference.FaceAPI.Identify(imgFile.Path);
 
@@ -92,9 +88,7 @@ namespace Facer.Pages
             resultText += $"Identified {identified} faces.";
             resultText += peopleIdentified;
             ResultsView.Text = resultText;
-            // Delete temp file
-            System.IO.File.Delete(imgFile.Path);
-            Console.WriteLine($"[IdentificationPage] Deleted image: {imgFile.Path}");
+
             await _parent.Navigation.PushModalAsync(this);
         }
         public async void AddRecord(object o, EventArgs e)
@@ -119,6 +113,11 @@ namespace Facer.Pages
             _parent.Refresh();
             await Navigation.PopModalAsync();
         }
-
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            // Delete temp file
+            System.IO.File.Delete(tempfile);
+        }
     }
 }

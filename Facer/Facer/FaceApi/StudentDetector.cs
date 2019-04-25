@@ -132,6 +132,7 @@ namespace Facer.FaceApi
                     { 
                         var id = iden.candidates[0].personId;
                         var person = await GetStudentByID(id);
+                        Console.WriteLine($"[StudentDetector] Found candidate {person.LocalID}");
                         finalResult.Add(person, new IdentificationInfo(facesDict[iden.faceId], iden.candidates[0].confidence));
                     }
                 }
@@ -170,14 +171,12 @@ namespace Facer.FaceApi
         #region Helper Function
         private async Task<Person> GetStudentByID(string id)
         {
-            if(_allPeople == null)
+            _allPeople = await _pManager.GetAllPersons(_groupID);
+            foreach (Person p in _allPeople)
             {
-                _allPeople = await _pManager.GetAllPersons(_groupID);
+                Console.WriteLine($"LocalID: {p.LocalID} ServerID: {p.ServerID} id: {id}");
             }
-
-            var ss = await _pManager.GetAllPersons(_groupID);
-
-            return ss.Find(x => x.ServerID == id);
+            return _allPeople.Find(x => x.ServerID == id);
         }
         #endregion
     }
