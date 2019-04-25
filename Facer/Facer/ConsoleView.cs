@@ -11,6 +11,7 @@ namespace Facer
         public ConsoleView() : base()
         {
             this.IsEnabled = false;
+            this.FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label));
         }
 
         public void WriteLine(string msg)

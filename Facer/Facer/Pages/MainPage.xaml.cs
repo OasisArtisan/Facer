@@ -16,5 +16,15 @@ namespace Facer.Pages
         {
             InitializeComponent();
         }
+        public void SwitchToTab(int i)
+        {
+            this.CurrentPage = this.Children[i];
+        }
+        public void RefreshTabs()
+        {
+            foreach (ContentPage cp in this.Children){
+                (cp as CustomContentPage).Refresh();
+            }
+        }
     }
 }

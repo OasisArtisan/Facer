@@ -16,12 +16,12 @@ namespace Facer.FaceApi
         private string _groupID;
         private string _groupName = "MainGroup";
         private List<Person> _allPeople = null;
-        private bool _groupDeletedFlag;
+        private bool _updateAllPeople;
         
         #endregion
 
         #region Public Data
-        public bool TrainingUpdated;
+        public bool NeedTraining;
         #endregion
 
         #region Constructor
@@ -42,7 +42,8 @@ namespace Facer.FaceApi
         private StudentDetector(string groupID)
         {
             _groupID = groupID;
-
+            _updateAllPeople = true;
+            NeedTraining = true;
             // Make instances of the needed tools
             _pManager = new PersonManager(_key);
             _gManager = new PersonGroupManager(_key);
@@ -60,7 +61,7 @@ namespace Facer.FaceApi
                 App.Reference.Printer.PrintLine($"[StudentDetector] Adding Image Path: {image}");
                 await _pManager.AddPersonFace(_groupID, studentID, image);
             }
-            TrainingUpdated = false;
+            NeedTraining = true;
         }
 
         public async Task<Dictionary<string, FaceRectangle>> Detect(string imagePath, FaceApi api = null)
@@ -90,7 +91,7 @@ namespace Facer.FaceApi
         public async Task<Dictionary<Person, IdentificationInfo>> Identify(string path)
         {
             App.Reference.Printer.PrintLine($"[StudentDetector] Identifying image in path: {path}");
-            if(!TrainingUpdated)
+            if(NeedTraining)
             {
                 await TrainGroup();
             }
@@ -124,6 +125,7 @@ namespace Facer.FaceApi
                     else
                     { 
                         var id = iden.candidates[0].personId;
+                        App.Reference.Printer.PrintLine($"[StudentDetector] ID: {id}");
                         var person = await GetStudentByID(id);
                         App.Reference.Printer.PrintLine($"[StudentDetector] Found candidate {person.LocalID}");
                         finalResult.Add(person, new IdentificationInfo(facesDict[iden.faceId], iden.candidates[0].confidence));
@@ -137,7 +139,6 @@ namespace Facer.FaceApi
             }
             string peopleIdentified = "";
             int identified = 0;
-            App.Reference.Printer.PrintLine("-------------------HohHOHOHOOHOHOHOHOHOOO----------------");
             foreach(Person p in finalResult.Keys)
             {
                 if(p.LocalID == null)
@@ -156,14 +157,15 @@ namespace Facer.FaceApi
         {
             App.Reference.Printer.PrintLine("[StudentDetector] Training Group...");
             var result = await _gManager.TrainPersonGroup(_groupID);
-            TrainingUpdated = true;
+            NeedTraining = false;
             return result;
         }
 
         public async Task<bool> DeletePerson(Student student)
         {
             var person = await GetStudentByID(student.ID);
-
+            _updateAllPeople = true;
+            NeedTraining = true;
             return await _pManager.DeletePerson(_groupID, person.ServerID);
         }
 
@@ -174,7 +176,8 @@ namespace Facer.FaceApi
 
             if(result)
             {
-                _groupDeletedFlag = true;
+                _updateAllPeople = true;
+                await MakeServerGroup("123456", "MainGroup");
                 return result;
             }
             return result;
@@ -184,7 +187,7 @@ namespace Facer.FaceApi
         #region Helper Function
         private async Task<Person> GetStudentByID(string id)
         {
-            if(_groupDeletedFlag == true)
+            if(_updateAllPeople)
             {
                 _allPeople = await _pManager.GetAllPersons(_groupID);
             }

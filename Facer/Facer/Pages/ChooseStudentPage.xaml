@@ -6,6 +6,7 @@
     x:Class="Facer.Pages.ChooseStudentPage">
     <ContentPage.Content>
         <StackLayout>
+            <Label Text="Choose Student" HorizontalOptions="CenterAndExpand"/>
             <ListView x:Name="StudentListView" VerticalOptions="FillAndExpand" IsPullToRefreshEnabled="True"
                   SelectionMode="None">
                 <ListView.ItemTemplate>

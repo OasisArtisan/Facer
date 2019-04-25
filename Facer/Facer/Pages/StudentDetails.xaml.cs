@@ -38,9 +38,10 @@ namespace Facer.Pages
             {
                 PercentageLabel.Text = $"{attendedRecords}/{totalRecords}   {attendedRecords*100f / totalRecords}% Attended";
             }
-            DeleteButton.Clicked += (e, o) =>
+            DeleteButton.Clicked += async (e, o) =>
             {
                 App.Reference.Data.RemoveStudent(st);
+                await App.Reference.FaceAPI.DeletePerson(st);
                 _parent.Refresh();
                 Navigation.PopModalAsync();
             };

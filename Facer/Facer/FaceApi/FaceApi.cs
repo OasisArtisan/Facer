@@ -59,7 +59,6 @@ namespace Facer.FaceApi
             MakeHttpRequest(Service.Identification);
 
             var x = JSONIdentificationBodyWriter(groupID, maxCandidateNumber, threshold, facesID);
-            App.Reference.Printer.PrintLine(x);
             var body = Encoding.UTF8.GetBytes(x);
 
             HttpResponseMessage response;
@@ -69,7 +68,6 @@ namespace Facer.FaceApi
                 response = await client.PostAsync(uri, content);
             }
             var y = await response.Content.ReadAsStringAsync();
-            App.Reference.Printer.PrintLine(y);
             return JsonConvert.DeserializeObject<List<FaceIdentifyResult>>(y);
         }
 

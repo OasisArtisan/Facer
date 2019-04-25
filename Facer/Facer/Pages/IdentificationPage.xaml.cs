@@ -57,14 +57,19 @@ namespace Facer.Pages
                     Directory = "FacerAttendance",
                     Name = "class"
                 });
+                if (imgFile == null) return;
                 App.Reference.Printer.PrintLine($"[IdentificationPage] image captured. Path: {imgFile.Path}");
             }
             else if (response.Equals("Choose Picture"))
             {
                 imgFile = await CrossMedia.Current.PickPhotoAsync();
+                if (imgFile == null) return;
                 App.Reference.Printer.PrintLine($"[IdentificationPage] image chosen. Path: {imgFile.Path}");
             }
             tempfile = imgFile.Path;
+            //Switch to admin tab
+            (App.Reference.MainPage as MainPage).SwitchToTab(2);
+
             // Detect and identify people in the image
             identificationResults = await App.Reference.FaceAPI.Identify(imgFile.Path);
 
@@ -82,7 +87,14 @@ namespace Facer.Pages
                 {
                     continue;
                 }
-                peopleIdentified += $"\nID:{p.LocalID} CONF:{identificationResults[p].Confidence * 100f}%";
+                if (App.Reference.Data.IDExists(p.LocalID))
+                {
+                    peopleIdentified += $"\n{App.Reference.Data.GetEnrolledStudent(p.LocalID).Formatted} Confidence:{identificationResults[p].Confidence * 100f}%";
+                } else
+                {
+                    peopleIdentified += $"\nLocal-Server Mismatch ID '{p.LocalID}' Confidence:{identificationResults[p].Confidence * 100f}%";
+                }
+                
                 identified++;
             }
             resultText += $"Identified {identified} faces.";
@@ -112,6 +124,7 @@ namespace Facer.Pages
             App.Reference.Data.CreateAttendanceRecord(ar);
             _parent.Refresh();
             await Navigation.PopModalAsync();
+            (App.Reference.MainPage as MainPage).SwitchToTab(0);
         }
         protected override void OnDisappearing()
         {

@@ -16,7 +16,7 @@ namespace Facer.Data
         public SQLiteDataStorage(string dbPath, string dbName)
         {
             string combinedPath = Path.Combine(dbPath, dbName + ".db3");
-            Console.WriteLine("Coco}" + combinedPath);
+            App.Reference.Printer.PrintLine("Coco}" + combinedPath);
             Database = new SQLiteConnection(combinedPath);
             // Types that can be converted to columns in a table must have all of their properites primitive
             // Only properties that have a get and set access will be converted to a column
@@ -27,7 +27,7 @@ namespace Facer.Data
 
         public override void EnrollStudent(Student st)
         {
-            Console.WriteLine($"[SQLiteDataStorage] Enrolling student: {st.Formatted}");
+            App.Reference.Printer.PrintLine($"[SQLiteDataStorage] Enrolling student: {st.Formatted}");
             st.BindToStorage(this);
             _enrolledStudents.Add(st.ID, st);
             Database.Insert(st);
@@ -36,13 +36,13 @@ namespace Facer.Data
         public override void RemoveStudent(Student st)
         {
             // Caution: This method does not remove the student from attendance records
-            Console.WriteLine($"[SQLiteDataStorage] Removing student: {st.Formatted}");
+            App.Reference.Printer.PrintLine($"[SQLiteDataStorage] Removing student: {st.Formatted}");
             RemoveStudent(st.ID);
         }
 
         public override void RemoveStudent(string id)
         {
-            Console.WriteLine($"[SQLiteDataStorage] Removing student: {id}");
+            App.Reference.Printer.PrintLine($"[SQLiteDataStorage] Removing student: {id}");
             // Caution: This method does not remove the student from attendance records
             _enrolledStudents.Remove(id);
             Database.Delete<Student>(id);
@@ -50,20 +50,20 @@ namespace Facer.Data
 
         public override void UpdateStudent(Student st)
         {
-            Console.WriteLine($"[SQLiteDataStorage] Updating student: {st.Formatted}");
+            App.Reference.Printer.PrintLine($"[SQLiteDataStorage] Updating student: {st.Formatted}");
             Database.Update(st);
         }
 
         public override void ClearStudents()
         {
-            Console.WriteLine("[SQLiteDataStorage] Clearing students");
+            App.Reference.Printer.PrintLine("[SQLiteDataStorage] Clearing students");
             _enrolledStudents.Clear();
             Database.DeleteAll<Student>();
         }
 
         public override void CreateAttendanceRecord(AttendanceRecord ar)
         {
-            Console.WriteLine($"[SQLiteDataStorage] Creating attendance record: {ar.Formatted}");
+            App.Reference.Printer.PrintLine($"[SQLiteDataStorage] Creating attendance record: {ar.Formatted}");
             ar.BindToStorage(this);
             _attendanceRecords.Add(ar.Date,ar);
             Database.InsertOrReplace(ar);
@@ -71,39 +71,40 @@ namespace Facer.Data
 
         public override void RemoveAttendanceRecord(AttendanceRecord ar)
         {
-            Console.WriteLine($"[SQLiteDataStorage] Removing attendance record: {ar.Formatted}");
+            App.Reference.Printer.PrintLine($"[SQLiteDataStorage] Removing attendance record: {ar.Formatted}");
             RemoveAttendanceRecord(ar.Date);
         }
 
         public override void RemoveAttendanceRecord(DateTime dt)
         {
-            Console.WriteLine($"[SQLiteDataStorage] Removing attendance record: {dt}");
+            App.Reference.Printer.PrintLine($"[SQLiteDataStorage] Removing attendance record: {dt}");
             _attendanceRecords.Remove(dt);
             Database.Delete<AttendanceRecord>(dt);
         }
 
         public override void UpdateAttendanceRecord(AttendanceRecord ar)
         {
-            Console.WriteLine($"[SQLiteDataStorage] Updating attendance record: {ar.Formatted}");
+            App.Reference.Printer.PrintLine($"[SQLiteDataStorage] Updating attendance record: {ar.Formatted}");
             Database.InsertOrReplace(ar);
         }
 
         public override void ClearAttendanceRecords()
         {
-            Console.WriteLine($"[SQLiteDataStorage] Clearing attendance records");
+            App.Reference.Printer.PrintLine($"[SQLiteDataStorage] Clearing attendance records");
+            _attendanceRecords.Clear();
             Database.DeleteAll<AttendanceRecord>();
         }
 
         public override void ClearData()
         {
-            Console.WriteLine("[SQLiteDataStorage] Clearing all data");
+            App.Reference.Printer.PrintLine("[SQLiteDataStorage] Clearing all data");
             ClearAttendanceRecords();
             ClearStudents();
         }
 
         public override void LoadData()
         {
-            Console.WriteLine("[SQLiteDataStorage] Loading data");
+            App.Reference.Printer.PrintLine("[SQLiteDataStorage] Loading data");
             _enrolledStudents = new Dictionary<string, Student>();
             List<Student> stlist = Database.Query<Student>("SELECT * FROM Student");
             foreach (Student st in stlist)

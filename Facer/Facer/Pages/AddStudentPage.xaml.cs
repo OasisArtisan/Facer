@@ -77,10 +77,12 @@ namespace Facer.Pages
                     Directory = "FacerTraining",
                     Name = "student"
                 });
+                if (imgMediaFile == null) return;
                 App.Reference.Printer.PrintLine($"[AddStudentPage] image captured. Path: {imgMediaFile.Path}");
             } else if(response.Equals("Choose Picture"))
             {
                 imgMediaFile = await CrossMedia.Current.PickPhotoAsync();
+                if (imgMediaFile == null) return;
                 App.Reference.Printer.PrintLine($"[AddStudentPage] image chosen. Path: {imgMediaFile.Path}");
             }
             // Display acquired image
@@ -113,6 +115,8 @@ namespace Facer.Pages
                     FirstName = FirstNameEntry.Text,
                     LastName = LastNameEntry.Text
                 };
+
+                (App.Reference.MainPage as MainPage).SwitchToTab(2);
                 await Navigation.PopModalAsync();
                 await App.Reference.FaceAPI.AddStudentAsync(st, _imageFiles.Values.ToArray());
                 App.Reference.Data.EnrollStudent(st);
@@ -122,6 +126,7 @@ namespace Facer.Pages
                     System.IO.File.Delete(path);
                 }
                 _parent.Refresh();
+                (App.Reference.MainPage as MainPage).SwitchToTab(1);
             } else
             {
                 await DisplayAlert("Invalid Student", "Cannot add student, ID must be valid!", "Ok");

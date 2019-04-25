@@ -25,6 +25,8 @@ namespace Facer.Pages
                 if (confirmed)
                 {
                     App.Reference.Data.ClearData();
+                    (App.Reference.MainPage as MainPage).RefreshTabs();
+                    await App.Reference.FaceAPI.ResetGroup();
                 }
             };
             App.Reference.Printer.Subscribe(ConsoleOutputView);
