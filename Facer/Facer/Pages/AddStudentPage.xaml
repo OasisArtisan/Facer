@@ -3,7 +3,7 @@
     xmlns:facer_pages="clr-namespace:Facer.Pages"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="Facer.Pages.EditStudentPage">
+    x:Class="Facer.Pages.AddStudentPage">
     <StackLayout>
         <Label Text="ID (Must be unique):"/>
         <Entry x:Name="IDEntry" Keyboard="Numeric"/>

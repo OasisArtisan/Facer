@@ -112,6 +112,11 @@ namespace Facer.Data
             return _attendedStudents.Values;
         }
 
+        public int AttendedStudentsCount
+        {
+            get { return _attendedStudents.Count; }
+        }
+
         public Student GetStudent(string id)
         {
             Student st = null;

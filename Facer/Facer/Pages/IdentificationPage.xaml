@@ -6,6 +6,8 @@
         x:Class="Facer.Pages.IdentificationPage">
     <ContentPage.Content>
         <StackLayout>
+            <Image x:Name="ImageView"/>
+            <Editor x:Name="ResultsView" IsEnabled="False"/>
             <Button x:Name="AcceptButton" Text="Accept"/>
             <Button x:Name="RetakeButton" Text="Retake"/>
             <Button x:Name="CancelButton" Text="Cancel"/>

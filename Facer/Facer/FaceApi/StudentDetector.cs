@@ -60,9 +60,11 @@ namespace Facer.FaceApi
 
         public async Task AddStudentAsync(Student s, params string[] images)
         {
+            Console.WriteLine($"[StudentDetector] Adding {s.Formatted}");
             var studentID = await _pManager.CreatPerson(_groupID, ($"{s.ID}"));
             foreach(var image in images)
             {
+                Console.WriteLine($"[StudentDetector] Adding Image Path: {image}");
                 await _pManager.AddPersonFace(_groupID, studentID, image);
             }
             TrainingUpdated = false;
@@ -70,6 +72,7 @@ namespace Facer.FaceApi
 
         public async Task<Dictionary<string, FaceRectangle>> Detect(string imagePath, FaceApi api = null)
         {
+            Console.WriteLine($"[StudentDetector] Detecting image in path: {imagePath}");
             // Assign appripriate FaceApi Tool >>> this is done this way for the sake of "Identify" method
             FaceApi faceTools;
             if(api == null)
@@ -93,6 +96,7 @@ namespace Facer.FaceApi
 
         public async Task<Dictionary<Person, IdentificationInfo>> Identify(string path)
         {
+            Console.WriteLine($"[StudentDetector] Identifying image in path: {path}");
             if(!TrainingUpdated)
             {
                 await TrainGroup();
@@ -101,7 +105,7 @@ namespace Facer.FaceApi
 
             // Detect Faces
             var facesDict = await Detect(path, faceTools);
-
+            Console.WriteLine($"[StudentDetector] Detected {facesDict.Count} faces.");
             // Saperate facesID
             var facesIDs = facesDict.Keys.ToArray<string>();
 
@@ -137,13 +141,26 @@ namespace Facer.FaceApi
                 if(counter % 2 == 0)
                     await Task.Delay(30000);
             }
-
+            string peopleIdentified = "";
+            int identified = 0;
+            Console.WriteLine("-------------------HohHOHOHOOHOHOHOHOHOOO----------------");
+            foreach(Person p in finalResult.Keys)
+            {
+                if(p.LocalID == null)
+                {
+                    continue;
+                }
+                peopleIdentified += $"\nID:{p.LocalID} CONF:{finalResult[p].Confidence*100f}%";
+                identified++;
+            }
+            Console.WriteLine($"[StudentDetector] Identified {identified}/{facesDict.Count}.{peopleIdentified}");
             return finalResult;
 
         }
         
         public async Task<bool> TrainGroup()
         {
+            Console.WriteLine("[StudentDetector] Training Group...");
             var result = await _gManager.TrainPersonGroup(_groupID);
             TrainingUpdated = true;
             return result;

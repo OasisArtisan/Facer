@@ -31,7 +31,13 @@ namespace Facer.Pages
                     attendedRecords += 1;
                 }
             }
-            PercentageLabel.Text = $"{attendedRecords}/{totalRecords}, {attendedRecords / totalRecords}% Attended";
+            if(totalRecords == 0)
+            {
+                PercentageLabel.Text = $"{attendedRecords}/{totalRecords} Attended";
+            } else
+            {
+                PercentageLabel.Text = $"{attendedRecords}/{totalRecords}   {attendedRecords*100f / totalRecords}% Attended";
+            }
             DeleteButton.Clicked += (e, o) =>
             {
                 App.Reference.Data.RemoveStudent(st);

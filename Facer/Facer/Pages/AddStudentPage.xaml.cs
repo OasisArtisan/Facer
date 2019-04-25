@@ -77,9 +77,11 @@ namespace Facer.Pages
                     Directory = "FacerTraining",
                     Name = "student"
                 });
+                Console.WriteLine($"[AddStudentPage] image captured. Path: {imgMediaFile.Path}");
             } else if(response.Equals("Choose Picture"))
             {
                 imgMediaFile = await CrossMedia.Current.PickPhotoAsync();
+                Console.WriteLine($"[AddStudentPage] image chosen. Path: {imgMediaFile.Path}");
             }
             // Display acquired image
             img.Source = ImageSource.FromStream(() =>
@@ -87,7 +89,7 @@ namespace Facer.Pages
                 return imgMediaFile.GetStream();
             });
 
-            _imageFiles[img] = imgMediaFile.AlbumPath;
+            _imageFiles[img] = imgMediaFile.Path;
             // If we have acquired all images then we enable the save button
             bool completedImages = true;
             foreach (string i in _imageFiles.Values)
@@ -111,18 +113,23 @@ namespace Facer.Pages
                     FirstName = FirstNameEntry.Text,
                     LastName = LastNameEntry.Text
                 };
-                App.Reference.Data.EnrollStudent(st);
-                await App.Reference.FaceAPI.AddStudentAsync(st, _imageFiles.Values.ToArray());
-                _parent.Refresh();
                 await Navigation.PopModalAsync();
+                await App.Reference.FaceAPI.AddStudentAsync(st, _imageFiles.Values.ToArray());
+                App.Reference.Data.EnrollStudent(st);
+                // Delete temporary files
+                foreach (string path in _imageFiles.Values)
+                {
+                    System.IO.File.Delete(path);
+                }
+                _parent.Refresh();
             } else
             {
                 await DisplayAlert("Invalid Student", "Cannot add student, ID must be valid!", "Ok");
             }
         }
-        public void Cancel(object s, EventArgs e)
+        public async void Cancel(object s, EventArgs e)
         {
-            Navigation.PopModalAsync();
+            await Navigation.PopModalAsync();
         }
     }
 }

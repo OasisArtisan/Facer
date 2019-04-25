@@ -32,7 +32,7 @@ namespace Facer.Pages
              };
             AttendanceRecordsListView.ItemTapped += (s, e) =>
             {
-                Navigation.PushModalAsync(new AttendanceRecordDetails((AttendanceRecord)e.Item));
+                Navigation.PushModalAsync(new AttendanceRecordDetails(e.Item as AttendanceRecord));
             };
         }
 

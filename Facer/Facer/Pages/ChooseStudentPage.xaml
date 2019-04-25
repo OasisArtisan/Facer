@@ -1,15 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<facer_pages:CustomContentPage
-    xmlns:facer_pages="clr-namespace:Facer.Pages"
+<pages:CustomContentPage
+    xmlns:pages="clr-namespace:Facer.Pages"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="Facer.Pages.AttendanceRecordDetails">
+    x:Class="Facer.Pages.ChooseStudentPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label x:Name="DateLabel" Text="" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-            <Label x:Name="AttendedLabel"/>
-            <Button x:Name="AddStudentButton" Text="Add Student"/>
-            <ListView x:Name="StudentsList" IsPullToRefreshEnabled="True" SelectionMode="None">
+            <ListView x:Name="StudentListView" VerticalOptions="FillAndExpand" IsPullToRefreshEnabled="True"
+                  SelectionMode="None">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell Text="{Binding Path=Formatted}"/>
@@ -18,4 +16,4 @@
             </ListView>
         </StackLayout>
     </ContentPage.Content>
-</facer_pages:CustomContentPage>
+</pages:CustomContentPage>

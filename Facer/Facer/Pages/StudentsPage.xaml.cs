@@ -16,7 +16,7 @@ namespace Facer.Pages
 		public StudentsPage ()
 		{
 			InitializeComponent ();
-            AddStudentButton.Clicked += EditStudent;
+            AddStudentButton.Clicked += AddStudent;
             StudentListView.ItemsSource = App.Reference.Data.EnrolledStudentsEnumerable();
             StudentListView.Refreshing += (s, e) =>
             {
@@ -29,11 +29,11 @@ namespace Facer.Pages
             };
             StudentListView.ItemTapped += (s, e) =>
             {
-                Navigation.PushModalAsync(new StudentDetails((Student)e.Item));
+                Navigation.PushModalAsync(new StudentDetails(this,e.Item as Student));
             };
         }
 
-        public void EditStudent(object o, EventArgs e)
+        public void AddStudent(object o, EventArgs e)
         {
             Navigation.PushModalAsync(new AddStudentPage(this));
         }

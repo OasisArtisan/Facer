@@ -34,6 +34,11 @@ namespace Facer.Data
             return _enrolledStudents.Values;
         }
 
+        public int EnrolledStudentsCount
+        {
+            get { return _enrolledStudents.Count; }
+        }
+
         public Student GetEnrolledStudent(string id)
         {
             Student st = null;
@@ -53,6 +58,11 @@ namespace Facer.Data
         public IEnumerable<AttendanceRecord> AttendanceRecordsEnumerable()
         {
             return _attendanceRecords.Values;
+        }
+
+        public int AttendanceRecordsCount
+        {
+            get { return _attendanceRecords.Count; }
         }
 
         public AttendanceRecord GetAttendanceRecord(DateTime dt)
