@@ -53,7 +53,7 @@ namespace ImageTesting
             Console.ReadKey();
         }
 
-        public async static void MainAsync()
+        public async static void _MainAsync()
         {
             var manager = new PersonGroupManager(SharedData.SubscriptionKey);
             var list = await manager.GetPersonGroups();
@@ -61,9 +61,9 @@ namespace ImageTesting
                 Console.WriteLine($"{g.Name} : {g.PersonGroupID}");
         }
 
-        public async static void __MainAsync()
+        public async static void MainAsync()
         {
-
+            Console.WriteLine("Async Started");
             StudentDetector sd = await StudentDetector.CreateStudentDetector();
             //var paths = Directory.GetFiles(@"D:\ImageDataSet\A");
             //Console.WriteLine("Images Paths:");
@@ -74,22 +74,21 @@ namespace ImageTesting
             //Console.WriteLine("Training Started...");
             //await sd.TrainGroup();
             //Console.WriteLine("Done Training.");
-            var time = DateTime.Now.Second;
+            //var time = DateTime.Now.Second;
             Console.WriteLine("Start Identification Process...");
-            var dict = await sd.Identify(@"D:\ImageDataSet\id4.jpg");
+            var dict = await sd.Identify(@"D:\ImageDataSet\id5.jpg");
             Console.WriteLine("Done Identification...");
             foreach(var p in dict.Keys)
             {
-                if(p.Name != null && p.Name.Length > 1)
+                if(p.LocalID != null && p.LocalID.Length > 1)
                 {
-                    Console.WriteLine($"Person:{p.Name}, Confidence: {dict[p].Confidence}");
+                    Console.WriteLine($"Person:{p.LocalID}, Confidence: {dict[p].Confidence}");
                 }
                 else
                     Console.WriteLine("Unknown Person...");
             }
-            Console.WriteLine($"Needed Time: {(DateTime.Now.Second - time).ToString()}s");
         }
-        public async static void _MainAsync()
+        public async static void __MainAsync()
         {
             // Creating instances of our objects
             var GManager = new PersonGroupManager(SharedData.SubscriptionKey);
@@ -154,16 +153,16 @@ namespace ImageTesting
             var identified = await faceApi.IdentifyPerson(group1ID, 3, 0.7, faces.Select<Face, string>(x => x.faceId).ToArray<string>());
             foreach(var iden in identified)
             {
-                Person? person = null;
+                Person person = null;
                 if(iden.candidates.Length == 0)
                 {
                     Console.WriteLine("Face is not identified");
                 }
                 else
                 {
-                    person = persons.Find(x => x.PersonID == iden.candidates[0].personId);
+                    person = persons.Find(x => x.LocalID == iden.candidates[0].personId);
                     if(person != null)
-                        Console.WriteLine($"The person in the image is: {person.Value.Name}");
+                        Console.WriteLine($"The person in the image is: {person.LocalID}");
                     else
                         Console.WriteLine("No person is found");
                 }

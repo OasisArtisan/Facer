@@ -11,11 +11,23 @@ namespace Test
         
         public static void Main(string[] args)
         {
-            var t = DateTime.Now.Second;
-            Thread.Sleep(4010);
-            Console.WriteLine(DateTime.Now.Second - t);
+            var c = new A();
+            c.printer();
             Console.ReadKey();
         }
+    }
 
+    class A
+    {
+        public void printer()
+        {
+            string value = "AAA";
+            stringChanger(value);
+            Console.WriteLine(value);
+        }
+        private void stringChanger(string val)
+        {
+            val = "hhh";
+        }
     }
 }

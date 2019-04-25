@@ -13,8 +13,6 @@ namespace Facer.FaceApi
 {
     public class PersonManager
     {
-
-
         #region Static methods
 
         /// <summary>
@@ -87,6 +85,18 @@ namespace Facer.FaceApi
             return JsonConvert.DeserializeObject<List<Person>>(response.Result.Content.ReadAsStringAsync().Result);
         }
 
+        public async static Task<bool> Deleteperson(string groupID, string personID, string key)
+        {
+            var client = new HttpClient();
+
+            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", key);
+
+            var uri = $"{SharedData.ServerLocation}/{groupID}/persons/{personID}";
+
+            var response = await client.DeleteAsync(uri);
+
+            return response.IsSuccessStatusCode;
+        }
         #endregion
 
         #region Constructor & Subscription Key
@@ -115,8 +125,10 @@ namespace Facer.FaceApi
             return await GetAllpersons(groupID, Key);
         }
 
+        public async Task<bool> DeletePerson(string groupID, string personID)
+        {
+            return await Deleteperson(groupID, personID, SharedData.SubscriptionKey);
+        }
         #endregion
-
-
     }
 }

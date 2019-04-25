@@ -13,6 +13,7 @@ namespace Facer.FaceApi
     public class PersonGroupManager
     {
         private string subscriptionKey;
+
         #region Static Methods
         public async static Task<bool> CreatPersongroup(string name, string groupID, string key)
         {
