@@ -12,5 +12,7 @@ namespace ImageTesting
         public string Name { get; set; }
         public object UserData { get; set; }
         public string[] PersistedFacesIDs { get; set; }
+
+        public double randomizer;
     }
 }

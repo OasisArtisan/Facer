@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Facer.FaceApi
 {
-    public struct Person
+    public class Person
     {
         public string PersonID { get; set; }
         public string Name { get; set; }

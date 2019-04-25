@@ -30,15 +30,18 @@ namespace ImageTesting
 
             // Get List of all the available groups on the server
             var groups = await PersonGroupManager.GetPersongroups(SharedData.SubscriptionKey);
+            Console.WriteLine($"List is here with lenght: {groups.Count}");
 
             // If no group are there, make one...
             if(groups.Count < 1)
             {
                 await PersonGroupManager.CreatPersongroup(groupName, groupID, SharedData.SubscriptionKey);
+                Console.WriteLine("New group is created...");
             }
             else // If there is/are group/s take the ID of the first one
             {
                 groupID = groups[0].PersonGroupID;
+                Console.WriteLine($"Group ID got {groupID}");
             }
 
             // Return the newly created "StudentDetector" object 
@@ -117,7 +120,8 @@ namespace ImageTesting
                 {
                     if(iden.candidates.Count() < 1)
                     {
-                        finalResult.Add(new Person(), new IdentificationInfo(facesDict[iden.faceId], 0));
+                        var rand = new Random(DateTime.Now.Second);
+                        finalResult.Add(new Person { randomizer = rand.NextDouble() }, new IdentificationInfo(facesDict[iden.faceId], 0));
                     }
                     else
                     { 

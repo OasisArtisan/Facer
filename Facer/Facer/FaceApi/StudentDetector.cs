@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.IO;
+using Facer.Data;
 
 namespace Facer.FaceApi
 {
@@ -15,6 +16,8 @@ namespace Facer.FaceApi
         private string _groupID;
         private string _groupName = "MainGroup";
         private List<Person> _allPeople = null;
+
+        
         #endregion
 
         #region Public Data

@@ -53,7 +53,7 @@ namespace ImageTesting
             Console.ReadKey();
         }
 
-        public async static void MainAsync()
+        public async static void _MainAsync()
         {
             var manager = new PersonGroupManager(SharedData.SubscriptionKey);
             var list = await manager.GetPersonGroups();
@@ -61,9 +61,9 @@ namespace ImageTesting
                 Console.WriteLine($"{g.Name} : {g.PersonGroupID}");
         }
 
-        public async static void __MainAsync()
+        public async static void MainAsync()
         {
-
+            Console.WriteLine("Async Started");
             StudentDetector sd = await StudentDetector.CreateStudentDetector();
             //var paths = Directory.GetFiles(@"D:\ImageDataSet\A");
             //Console.WriteLine("Images Paths:");
@@ -74,9 +74,9 @@ namespace ImageTesting
             //Console.WriteLine("Training Started...");
             //await sd.TrainGroup();
             //Console.WriteLine("Done Training.");
-            var time = DateTime.Now.Second;
+            //var time = DateTime.Now.Second;
             Console.WriteLine("Start Identification Process...");
-            var dict = await sd.Identify(@"D:\ImageDataSet\id4.jpg");
+            var dict = await sd.Identify(@"D:\ImageDataSet\id5.jpg");
             Console.WriteLine("Done Identification...");
             foreach(var p in dict.Keys)
             {
@@ -87,9 +87,8 @@ namespace ImageTesting
                 else
                     Console.WriteLine("Unknown Person...");
             }
-            Console.WriteLine($"Needed Time: {(DateTime.Now.Second - time).ToString()}s");
         }
-        public async static void _MainAsync()
+        public async static void __MainAsync()
         {
             // Creating instances of our objects
             var GManager = new PersonGroupManager(SharedData.SubscriptionKey);
